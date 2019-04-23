@@ -102,9 +102,12 @@ if (isset($_POST['btnChangeStatus']))
 
 		$visible = (isset($_POST['visible']));
 		$chapter = FilterNumber($_POST['chapter']);
-     
+    
+    if(is_array($visible)){  //if problem the remove 
+
 		if(count($visible) > 0 )
 		{
+      $visible = count($visible); //if problem the remove 
 			if ($chapter > 0)
 				$strUpdate = "UPDATE exam_question SET is_active = 'N' WHERE chapter_no = '$chapter';";
 			else
@@ -116,6 +119,9 @@ if (isset($_POST['btnChangeStatus']))
 				$db->query($strUpdate);
 			}
 		}
+  }else{
+   // $visible = 0; //if problem the remove 
+  }
   }
 }
 
