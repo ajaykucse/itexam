@@ -95,7 +95,7 @@ $strChapter = "SELECT exam_exam.exam_id,
 	WHERE exam_exam.exam_id = '$exam_id'
 ;";
 $query_chapter = $db->query($strChapter);
-
+$SN=0;
 while ($row_chapter = $db->fetch_object($query_chapter))
 {
 $strTotal = "SELECT count(chapter_no) as `total_question` FROM exam_exam_question WHERE exam_id= '$exam_id' AND chapter_no = '$row_chapter->chapter_no';";
@@ -103,7 +103,7 @@ $queryTotal = $db->query($strTotal);
 $rowTotal = $db->fetch_object($queryTotal);
 $total_question = $rowTotal->total_question;
 
-$total_total_question = $total_total_question + $total_question;
+$total_total_question = (!empty($total_total_question)) + $total_question;
 
 if ($total_question >= $row_chapter->no_of_question) $isMax = TRUE;
 else $isMax = FALSE;
@@ -112,7 +112,7 @@ if ($isMax)	$font = "green";
 else $font="red";
 
 $str_total_question = "<span style=\"font-size:130%; color:$font\">$total_question</span>";
-$total_no_of_question = $total_no_of_question + $row_chapter->no_of_question;
+$total_no_of_question = (!empty($total_no_of_question)) + $row_chapter->no_of_question;
 $db->free($queryTotal);
 unset($query_total, $strTotal, $rowTotal);
 ?>
@@ -142,7 +142,7 @@ unset($query_total, $strTotal, $rowTotal);
 	}
 
 
-	if ( (isset($_POST['task']) == "update_exam_type_question") && (FilterNumber($_POST['exam_type_id']) > 0) && (FilterNumber($_POST['chapter_no']) > 0) )
+	if ( (isset($_POST['task']) == "update_exam_type_question") && (FilterNumber(isset($_POST['exam_type_id'])) > 0) && (FilterNumber($_POST['chapter_no']) > 0) )
 	{
 		require_once "includes/functions.inc.php";
 
@@ -710,7 +710,7 @@ SELECT exam_center.center_name
       </tbody>
     </table>
 <br>
-<table width="100%" border="1" cellpadding="0" cellspacing="0" class="table  table-striped table-bordered">
+<table width="100%" border="1" cellpadding="0" cellspacing="0" class="table">
         <thead>
           <tr>
             <th width="5%">SN</th>

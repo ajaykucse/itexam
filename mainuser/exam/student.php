@@ -51,16 +51,16 @@ if (isset($_POST['btnAddStudent']))		//Add student from Exam
 				if ($no_of_student == 0)
 				{
 					$strInsStudent = "INSERT INTO exam_exam_student (student_id, exam_id, center_id, `password`, `txtPassword`, active_date) VALUES ('$KEY', '$exam_id', '$center_id', '$randPass', '$txtPass',NOW() );";
-					if (!$isExisting) $query_insert = $db->query($strInsStudent);
+					if (!isset($isExisting)) $query_insert = $db->query($strInsStudent);
           else $query_insert = TRUE;
           
 				}
 				else $query_insert = TRUE;
 			}
 
-      if ($isExisting)
+      if (!isset($isExisting))
       {
-        $CountERROR = count($PASS_STUDENT);
+        $CountERROR = count(!empty($PASS_STUDENT));
         $textExisting ="<br><br>Following Student(s) have been already passed this type of exam: <br>";
         $textExisting .= "<ul>";
         for($i=0;$i<$CountERROR;$i++)
@@ -72,7 +72,7 @@ if (isset($_POST['btnAddStudent']))		//Add student from Exam
       
 			if ($query_insert)
       {
-				notify("Student Assigned","Successfully Assigned student to this Exam." .$textExisting,NULL,TRUE,5000);
+				notify("Student Assigned","Successfully Assigned student to this Exam." .(!empty($textExisting)),NULL,TRUE,5000);
 				$db->commit();
       }
 			else
@@ -324,7 +324,7 @@ $excelUpload = TRUE;
 
 <div class="row">
 	<div class="col-md-12">
-		<form method="post" enctype="multipart/form-data" class="form-horizontal" id="upload">
+	<form method="post" enctype="multipart/form-data" class="form-horizontal" id="upload">
       <fieldset>
       	<legend>Upload Excel File (Student Details)</legend>
       	<label class="col-md-3">Upload Excel File (*.xls)</label>
@@ -393,11 +393,12 @@ if ($no_of_assigned_student > 0)
 <?php
 unset($no_of_std);
 
+$SNO =0;
 while ($rowAssigned = $db->fetch_object($query_assigned_student))
 {
 ?>
           	<tr>
-            	<td><?php echo ++$SNO;?></td>
+            	<td><?php  echo ++$SNO;?></td>
             	<td width="10%"><?php echo $rowAssigned->it_serial;?></td>
               <td width="10%"><?php echo $rowAssigned->reg_no;?></td>
               <td><?php echo $rowAssigned->name;?>
@@ -426,6 +427,7 @@ $('#deselect-all1').click(function(event) {
             </tr>
 <?php
 }
+$no_of_std =1;
 $no_of_std++;
 if ($no_of_std > 0)
 {
@@ -500,12 +502,12 @@ if ($no_of_assigned_student > 0)
             </tr>
 <?php
 unset($no_of_std);
-
+$SNO =0;
 while ($rowAssigned = $db->fetch_object($query_assigned_student))
 {
 ?>
           	<tr>
-            	<td><?php $SNO =0; echo ++$SNO;?></td>
+            	<td><?php  echo ++$SNO;?></td>
             	<td width="10%"><?php echo $rowAssigned->it_serial;?></td>
               <td width="10%"><?php echo $rowAssigned->reg_no;?></td>
               <td><?php echo $rowAssigned->name;?>

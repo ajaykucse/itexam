@@ -1,5 +1,5 @@
 <?php
-session_start();
+@session_start();
 if (file_exists("security.php")) include_once "security.php";
 if (file_exists("../security.php")) include_once "../security.php";
 if (file_exists("../../security.php")) include_once "../../security.php";
@@ -191,6 +191,7 @@ $row = $db->fetch_object($query_exam);
 	ORDER BY exam_center.center_id				
 				" ;
         $query_center = $db->query($sql_center);
+        $SN=0;
         while ($row_center = $db->fetch_object($query_center))
         {
             $checked = FALSE;
