@@ -1,5 +1,5 @@
 <?php
-session_start();
+@session_start();
 if (file_exists("security.php")) include_once "security.php";
 if (file_exists("../security.php")) include_once "../security.php";
 if (file_exists("../../security.php")) include_once "../../security.php";
@@ -83,7 +83,7 @@ if (!$_SESSION['ONLINE-EXAM-SIMULATOR-ADMIN-USER'])
 	}
 ?>
 <?php 
-if ($isError)
+if (isset($isError))
 {
 	$CountERROR = count($error);
 	$text = "<ul>";

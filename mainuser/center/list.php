@@ -1,5 +1,5 @@
 <?php
-session_start();
+@session_start();
 if (file_exists("security.php")) include_once "security.php";
 if (file_exists("../security.php")) include_once "../security.php";
 if (file_exists("../../security.php")) include_once "../../security.php";
@@ -44,7 +44,13 @@ if (!$exam_center_change)
 ?>
 
       <form method="post" class="pull-right form-inline" action="add.html">
-        <button type="submit" name="btnAddNew" id="btnAddNew" class="btn btn-primary"<?php echo $disabled_add;unset($disabled_add);?>><span class="fa fa-plus-circle"></span> Add New Center </button>
+        <button type="submit" name="btnAddNew" id="btnAddNew" class="btn btn-primary"<?php 
+
+              $disabled_add ='';
+                if(isset($_POST['disabled_add']))
+                  $disabled_add = $_POST['disabled_add'];
+
+        echo $disabled_add;unset($disabled_add);?>><span class="fa fa-plus-circle"></span> Add New Center </button>
       </form>
     </div>
   </div>
