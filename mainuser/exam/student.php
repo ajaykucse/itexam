@@ -1,5 +1,5 @@
 <?php
-session_start();
+@session_start();
 if (file_exists("security.php")) include_once "security.php";
 if (file_exists("../security.php")) include_once "../security.php";
 if (file_exists("../../security.php")) include_once "../../security.php";
@@ -505,7 +505,7 @@ while ($rowAssigned = $db->fetch_object($query_assigned_student))
 {
 ?>
           	<tr>
-            	<td><?php echo ++$SNO;?></td>
+            	<td><?php $SNO =0; echo ++$SNO;?></td>
             	<td width="10%"><?php echo $rowAssigned->it_serial;?></td>
               <td width="10%"><?php echo $rowAssigned->reg_no;?></td>
               <td><?php echo $rowAssigned->name;?>
@@ -533,6 +533,7 @@ $('#deselect-all2').click(function(event) {
             </tr>
 <?php
 }
+$no_of_std = 1;
 $no_of_std++;
 if ($no_of_std > 0)
 {

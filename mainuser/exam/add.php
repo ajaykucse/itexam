@@ -1,6 +1,6 @@
 <?php
 //error_reporting(E_ALL);
-//session_start();
+@session_start();
 if (file_exists("security.php")) include_once "security.php";
 if (file_exists("../security.php")) include_once "../security.php";
 if (file_exists("../../security.php")) include_once "../../security.php";
@@ -15,6 +15,7 @@ if (isset($_POST['btnAddExam']))
 	{
 		$exam_type_id = FilterNumber($_POST['exam_type_id']);
 		$exam_code = addslashes($_POST['exam_code']);
+
 		$center_id = $_POST['center_id'];
 
 		if (strlen($exam_code) == 0)
@@ -153,26 +154,23 @@ if ($no_of_center < 1)
             <div class="col-md-12 form-group">
               <label class="col-md-2">Exam Code</label>
               <div class="col-md-4">
-                <input type="text" name="exam_code" id="exam_code" class="form-control" value="<?php 
-                $exam_code = ''; 
- 						if( isset( $_GET['exam_code'])){
-		 					$exam_code = $_GET['exam_code'];
- 		
-		 				}
-
-
-                echo $exam_code;?>">
+                <input type="text" name="exam_code" id="exam_code" class="form-control" value="<?php echo (!empty($exam_code));?>">
               </div>
   
               <label class="col-md-2">Exam Type</label>
-              <div class="col-md-4">
-              	<!-- $txtUserID = isset($_GET['add_exam']['exam_type_id']) ? $_GET['add_exam']['exam_type_id'] : ''; -->
+              <div class="col-md-4"> 
                 <select name="exam_type_id" class="form-control">
   <?php
   while ($row_exam_type = $db->fetch_object($query_exam_type))
   {
   ?>
-                    <option value="<?php echo $row_exam_type->exam_type_id;?>"<?php if ($row_exam_type->exam_type_id ==$_SESSION['add_exam']['exam_type_id']) echo " selected=\"selected\"";?>><?php
+                    <option value="<?php
+                   
+
+                      echo $row_exam_type->exam_type_id;?>"<?php
+
+
+                       if ($row_exam_type->exam_type_id == (isset($_SESSION['add_exam']['exam_type_id']))) echo " selected=\"selected\"";?>><?php
                     echo $row_exam_type->exam_type;?></option><?php
   }
   ?>
@@ -209,7 +207,7 @@ if ($no_of_center < 1)
           }
           ?>
                   <tr>
-                    <td width="5%"><?php echo ++$SN;?></td>
+                    <td width="5%"><?php $SN=0; echo ++$SN;?></td>
                     <td><?php echo $row_center->center_name;?></td>
                     <td><?php echo $row_center->center_address;?></td>
                     <td width="15%" align="center"><input name="center_id[<?php echo $row_center->center_id;?>]" type="checkbox" class="student"<?php
