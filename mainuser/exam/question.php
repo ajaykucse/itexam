@@ -1,5 +1,5 @@
 <?php
-session_start();
+@session_start();
 if (file_exists("security.php")) include_once "security.php";
 if (file_exists("../security.php")) include_once "../security.php";
 if (file_exists("../../security.php")) include_once "../../security.php";
@@ -132,7 +132,9 @@ $strChapter = "SELECT exam_exam.exam_id,
 	WHERE exam_exam.exam_id = '$exam_id'
 ;";
 $query_chapter = $db->query($strChapter);
-
+$total_total_question=0;
+$total_no_of_question=0;
+$SN=0;
 while ($row_chapter = $db->fetch_object($query_chapter))
 {
 $strTotal = "SELECT count(chapter_no) as `total_question` FROM exam_exam_question WHERE exam_id= '$exam_id' AND chapter_no = '$row_chapter->chapter_no';";
@@ -217,6 +219,7 @@ SELECT exam_exam_type.exam_type_id,
 ";
 
 $query_chap_no = $db->query($strChapter);
+$chapter_no=0;
 while ($row_chap = $db->fetch_object($query_chap_no))
 {
 	$exam_type_id = $row_chap->exam_type_id;

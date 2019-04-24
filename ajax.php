@@ -1,5 +1,5 @@
 <?php 
-@session_start();
+session_start();
 define ("WEB-PROGRAM","Online Exam");
 define ("CODER","Sunil Kumar K. C.");
 if (file_exists("security.php")) include_once "security.php";
@@ -8,8 +8,7 @@ require_once "main_url.inc.php";
 $URL = main_url();
 $MAIN_URL = $URL;
 
-
-if (isset($_POST['ONLINE-EXAM-SIMULATOR-STUDENT']) ? $_POST['ONLINE-EXAM-SIMULATOR-STUDENT'] : '')
+if (isset($_SESSION['ONLINE-EXAM-SIMULATOR-STUDENT']))
 {
 	if ( ($_POST['task'] == "exam-started-or-not") && (FilterNumber($_POST['center_id']) > 0) && (FilterNumber($_POST['exam_id']) > 0) )
 	{
@@ -47,18 +46,14 @@ if (isset($_POST['ONLINE-EXAM-SIMULATOR-STUDENT']) ? $_POST['ONLINE-EXAM-SIMULAT
 		
 	}
 }
-
-//isset($_POST['ONLINE-EXAM-SIMULATOR-ADMIN-USER']) ? $_POST['ONLINE-EXAM-SIMULATOR-ADMIN-USER'] : ''
-
-
-else if ((isset($_POST['ONLINE-EXAM-SIMULATOR-CENTER-USER']) ? $_POST['ONLINE-EXAM-SIMULATOR-CENTER-USER'] : '') OR ($_SESSION['ONLINE-EXAM-SIMULATOR-ADMIN-USER']) )
+else if (isset($_SESSION['ONLINE-EXAM-SIMULATOR-CENTER-USER']) OR ($_SESSION['ONLINE-EXAM-SIMULATOR-ADMIN-USER']) )
 {
 	require_once "includes/functions.inc.php";
 
 	require_once "main_url.inc.php";
 	$URL = main_url();
 
-	if ((isset($_POST['task']) == "UpdateMinimumQuestion") && (FilterNumber($_POST['exam_id']) > 0) )
+	if ( ($_POST['task'] == "UpdateMinimumQuestion") && (FilterNumber($_POST['exam_id']) > 0) )
 	{
 		$config = new config();
 		$dbname = $config->dbname;
@@ -95,7 +90,7 @@ $strChapter = "SELECT exam_exam.exam_id,
 	WHERE exam_exam.exam_id = '$exam_id'
 ;";
 $query_chapter = $db->query($strChapter);
-$SN=0;
+
 while ($row_chapter = $db->fetch_object($query_chapter))
 {
 $strTotal = "SELECT count(chapter_no) as `total_question` FROM exam_exam_question WHERE exam_id= '$exam_id' AND chapter_no = '$row_chapter->chapter_no';";
@@ -103,7 +98,7 @@ $queryTotal = $db->query($strTotal);
 $rowTotal = $db->fetch_object($queryTotal);
 $total_question = $rowTotal->total_question;
 
-$total_total_question = (!empty($total_total_question)) + $total_question;
+$total_total_question = $total_total_question + $total_question;
 
 if ($total_question >= $row_chapter->no_of_question) $isMax = TRUE;
 else $isMax = FALSE;
@@ -112,7 +107,7 @@ if ($isMax)	$font = "green";
 else $font="red";
 
 $str_total_question = "<span style=\"font-size:130%; color:$font\">$total_question</span>";
-$total_no_of_question = (!empty($total_no_of_question)) + $row_chapter->no_of_question;
+$total_no_of_question = $total_no_of_question + $row_chapter->no_of_question;
 $db->free($queryTotal);
 unset($query_total, $strTotal, $rowTotal);
 ?>
@@ -142,7 +137,7 @@ unset($query_total, $strTotal, $rowTotal);
 	}
 
 
-	if ( (isset($_POST['task']) == "update_exam_type_question") && (FilterNumber(isset($_POST['exam_type_id'])) > 0) && (FilterNumber($_POST['chapter_no']) > 0) )
+	if ( ($_POST['task'] == "update_exam_type_question") && (FilterNumber($_POST['exam_type_id']) > 0) && (FilterNumber($_POST['chapter_no']) > 0) )
 	{
 		require_once "includes/functions.inc.php";
 
@@ -200,7 +195,7 @@ unset($query_total, $strTotal, $rowTotal);
 		
 	}
 
-	if ( (FilterString(isset($_POST['task'])) == "excel_upload") && ($_FILES['excel_file']) && ($_POST['exam_id']) && ($_POST['center_id']) )
+	if ( (FilterString($_POST['task']) == "excel_upload") && ($_FILES['excel_file']) && ($_POST['exam_id']) && ($_POST['center_id']) )
 	{
 		$exam_id = FilterNumber($_POST['exam_id']);
 		$center_id = FilterNumber($_POST['center_id']);
@@ -247,7 +242,7 @@ unset($query_total, $strTotal, $rowTotal);
 	}
 	if ($field > 0);
 		echo "</tr>";
-	
+		$SN=0;
 		foreach ($data as $K => $val)
 		{
 			
@@ -446,7 +441,7 @@ $(".question").click(function() {
 	<?php
 	}
 
-	if ( (isset($_POST['exam_type_id'])) && ($_POST['task'] == "view_exam_type") )
+	if (isset($_POST['exam_type_id']) && ($_POST['task'] == "view_exam_type") )
 	{
 		$exam_type_id = FilterNumber($_POST['exam_type_id']);
 		$config = new config();
@@ -710,7 +705,7 @@ SELECT exam_center.center_name
       </tbody>
     </table>
 <br>
-<table width="100%" border="1" cellpadding="0" cellspacing="0" class="table">
+<table width="100%" border="1" cellpadding="0" cellspacing="0" class="table  table-striped table-bordered">
         <thead>
           <tr>
             <th width="5%">SN</th>
@@ -1642,6 +1637,7 @@ GROUP BY exam_exam_question.exam_id, exam_exam_question.chapter_no;
 			$no_of_student = $db->num_rows($query_student);
 			if ($no_of_student > 0)
 			{
+				$SN=0;
 				while ($row_student = $db->fetch_object($query_student))
 				{
 			?>
@@ -1735,7 +1731,7 @@ GROUP BY exam_exam_question.exam_id, exam_exam_question.chapter_no;
 		$db->close();
 	}
 
-	if (isset($_POST['no_of_answer']) && $_POST['answer_type'] && $_POST['type']=="add" )
+	if(isset($_POST['no_of_answer']) && ($_POST['answer_type']) && ($_POST['type']=="add" ))
 	{
 		$no_of_answer = FilterNumber($_POST['no_of_answer']);
 		$answer_type = FilterString($_POST['answer_type']);
@@ -1764,7 +1760,7 @@ wysiwyg_ajax_answer($MAIN_URL,40,'exam-answer');
 
 	}
 
-	if(isset($_POST['no_of_answer']) && $_POST['answer_type'] && $_POST['type']=="edit_question" && ($_POST['question_id']) )
+	if(isset($_POST['no_of_answer']) && ($_POST['answer_type']) && ($_POST['type']) == "edit_question" && ($_POST['question_id']))
 	{
 
 		$no_of_answer = FilterNumber($_POST['no_of_answer']);
@@ -1773,7 +1769,7 @@ wysiwyg_ajax_answer($MAIN_URL,40,'exam-answer');
 		
 		if ($answer_type == "S") $single=TRUE;
 		
-		if (!empty($single)) $checkbox = "radio"; else $checkbox = "checkbox";
+		if ($single) $checkbox = "radio"; else $checkbox = "checkbox";
 	
 		$ans = $_SESSION['rand']['answer']['ans'];
 		$is_cor = $_SESSION['rand']['answer']['is_cor'];
@@ -1804,7 +1800,7 @@ wysiwyg_ajax_answer($MAIN_URL,40,'exam-answer');
 
  //edit 
 
-	if (isset($_POST['id']) && $_POST['question-answer'] && $_POST['task']=="question-answer-add" )
+	if (isset($_POST['id']) && ($_POST['question-answer']) && ($_POST['task']) == "question-answer-add" )
 	{
 		$id = FilterNumber($_POST['id']);
 		$_SESSION['question-answer'][$id] = $_POST['question-answer'];

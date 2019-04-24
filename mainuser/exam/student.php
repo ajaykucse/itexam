@@ -332,7 +332,8 @@ $excelUpload = TRUE;
         <input type="file" accept="application/vnd.ms-excel" id="excel_file" name="excel_file" class="form-control">
         <input type="hidden" name="excel_upload">
         <strong><u>Note:</u> Excel File should have only one sheet and 3 columns<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(column 1 = IT Serial No; column 2 = Reg No. & column 3 = Student Name)</strong> </div>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        (column 1 = IT Serial No; column 2 = Reg No. & column 3 = Student Name)</strong> </div>
         <div class="col-md-2">
         	<button class="btn btn-danger btn-sm" type="button" id="btnClean"><i class="fa fa-trash"></i> Clear File</button>
         </div>
@@ -379,6 +380,7 @@ if ($no_of_assigned_student > 0)
       <fieldset>
         <legend>Assigned Student</legend>
 					<table class="table table-bordered" id="exam_student_list">
+		<thead>
           	<tr>
             	<th width="5%">SN</th>
             	<th width="10%">IT Serial Number</th>
@@ -388,8 +390,9 @@ if ($no_of_assigned_student > 0)
               <th>
               <div class="tooltip-demo" style="width:180px;"><button title="Select All" class="btn btn-primary btn-sm btn-circle" type="button" name="select-all" id="select-all1"  data-toggle-tooltip="tooltip" data-placement="top"><i class="fa fa-check-square-o"></i></button>&nbsp;<button class="btn btn-warning btn-circle btn-sm" type="button" name="deselect-all" id="deselect-all1" title="De-select all"  data-toggle-tooltip="tooltip" data-placement="top"><i class="fa fa-square-o"></i></button>
                  </div>
-</th>
+				</th>
             </tr>
+        </thead>
 <?php
 unset($no_of_std);
 
@@ -490,6 +493,7 @@ if ($no_of_assigned_student > 0)
       <fieldset>
         <legend>Not Assigned Student</legend>
 					<table class="table table-bordered" id="exam_student_list">
+			<thead>
           	<tr>
             	<th width="5%">SN</th>
             	<th width="10%">IT Serial Number</th>
@@ -498,8 +502,9 @@ if ($no_of_assigned_student > 0)
               <th>
               <div class="tooltip-demo" style="width:180px;"><button title="Select All" class="btn btn-primary btn-sm btn-circle" type="button" name="select-all" id="select-all2"  data-toggle-tooltip="tooltip" data-placement="top"><i class="fa fa-check-square-o"></i></button>&nbsp;<button class="btn btn-warning btn-circle btn-sm" type="button" name="deselect-all" id="deselect-all2" title="De-select all"  data-toggle-tooltip="tooltip" data-placement="top"><i class="fa fa-square-o"></i></button>
                  </div>
-</th>
+				</th>
             </tr>
+         	</thead>    
 <?php
 unset($no_of_std);
 $SNO =0;
