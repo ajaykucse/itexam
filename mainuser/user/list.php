@@ -1,5 +1,5 @@
 <?php
-session_start();
+@session_start();
 if (file_exists("security.php")) include_once "security.php";
 if (file_exists("../security.php")) include_once "../security.php";
 if (file_exists("../../security.php")) include_once "../../security.php";
@@ -239,6 +239,7 @@ else
       <h3 style="margin-top:0px; margin-bottom:0px;"><span class="fa fa-users"></span> Users List</h3>
     </div>
 <?php
+$disabled_add=0;
 if (!$user_change)
   $disabled_add = " disabled=\"disabled\"";
 ?>
@@ -346,11 +347,12 @@ else
 		no_permission("User Permission","<br><font color=red>You don't have permission to do this action.</font><br>&nbsp;","edit","edit_modal",$rand,1);
 		no_permission("User Permission","<br><font color=red>You don't have permission to do this action.</font><br>&nbsp;","delete","delete_modal",$rand,3);
 }
+$user_reset_pw=0;
 if ($user_reset_pw)
 	confirm2("User List","Do you want to reset password of this user?","resetpw","reset_pw_modal",$rand,2);
 else
 		no_permission("User Permission","<br><font color=red>You don't have permission to do this action.</font><br>&nbsp;","resetpw","reset_pw_modal",$rand,2);
-
+$user_user_perm=0;
 if ($user_user_perm)		
 	confirm3("User Permission","Do you want to <b>View/Edit Permissions </b> of this user?","permission","permission-modal",$rand,"_permission");
 else

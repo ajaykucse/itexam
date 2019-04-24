@@ -91,6 +91,7 @@ $_SESSION['rand']['list_student']=$rand;
     </div>
     <div class="col-md-6 pull-right">
 <?php
+$disabled_add='';
 if (!$student_change)
   $disabled_add = " disabled=\"disabled\"";
 ?>

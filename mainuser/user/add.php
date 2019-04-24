@@ -1,5 +1,9 @@
 <?php
-session_start();
+@session_start();
+$isError=FALSE;
+$isAdmin = '';
+$isActive ='';
+$center_id = 0;
 if (file_exists("security.php")) include_once "security.php";
 if (file_exists("../security.php")) include_once "../security.php";
 if (file_exists("../../security.php")) include_once "../../security.php";

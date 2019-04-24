@@ -197,10 +197,10 @@ if ($no_of_center < 1)
         <?php
         while ($row_center = $db->fetch_object($query_center))
         {
-          if (count($_SESSION['add_exam']['center_id']) > 0)
+          if (count(isset($_SESSION['add_exam']['center_id'])) > 0)
           {
             $checked = FALSE;
-            foreach ($_SESSION['add_exam']['center_id'] as $key => $ID)
+            foreach (isset($_SESSION['add_exam']['center_id']) as $key => $ID)
             {
               if ($row_center->center_id == $key) $checked=TRUE;
             }

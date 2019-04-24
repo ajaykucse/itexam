@@ -1,5 +1,6 @@
 <?php
-session_start();
+@session_start();
+$isError=FALSE;
 if (file_exists("security.php")) include_once "security.php";
 if (file_exists("../security.php")) include_once "../security.php";
 if (file_exists("../../security.php")) include_once "../../security.php";
