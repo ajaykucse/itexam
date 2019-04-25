@@ -165,7 +165,7 @@ if ($_SESSION['ONLINE-EXAM-SIMULATOR-ADMIN-USER'])
 		if ($user_view || $user_change || $user_reset_pw || $user_user_perm) $isUser = TRUE;
 
 
-		$db_backup  = ''; 
+$db_backup  = ''; 
 if( isset( $_GET['db_backup '])) {
 	$db_backup  = $_GET['db_backup ']; 
 }
@@ -185,6 +185,7 @@ if( isset( $_GET['db_backup '])) {
 	}
 
 	$ii = strpos($page,"/");
+	$perm_folder = '';
 	if ($ii) 
 	{
 		$folder = explode("/",$page);
@@ -238,7 +239,7 @@ if( isset( $_GET['db_backup '])) {
 	else
 		$isPermission = TRUE;
 
-	$perm_folder = ''; 
+
 if( isset( $_GET['perm_folder']))
     $perm_folder = $_GET['perm_folder']; 
 

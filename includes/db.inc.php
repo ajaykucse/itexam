@@ -210,8 +210,9 @@ if ($this->query = @mysqli_rollback($this->link))
         }
 
         if (PHP_SAPI !== 'cli') 
-				{
-						$text .= "Message: $message<br>";
+		{
+            $text='';
+						$text.= "Message: $message<br>";
 						if (strlen($this->error) > 0): 
 						 $text .= $this->error;
 					 endif; 

@@ -1,5 +1,5 @@
 <?php 
-session_start();
+@session_start();
 if (!isset($_SESSION['ONLINE-EXAM-SIMULATOR-ADMIN-USER']))
 {
   echo '<meta http-equiv="refresh" content="0;URL='.$URL.'../start.html" />';	

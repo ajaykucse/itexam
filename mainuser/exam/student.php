@@ -51,16 +51,16 @@ if (isset($_POST['btnAddStudent']))		//Add student from Exam
 				if ($no_of_student == 0)
 				{
 					$strInsStudent = "INSERT INTO exam_exam_student (student_id, exam_id, center_id, `password`, `txtPassword`, active_date) VALUES ('$KEY', '$exam_id', '$center_id', '$randPass', '$txtPass',NOW() );";
-					if (!isset($isExisting)) $query_insert = $db->query($strInsStudent);
+					if (!$isExisting) $query_insert = $db->query($strInsStudent);
           else $query_insert = TRUE;
           
 				}
 				else $query_insert = TRUE;
 			}
 
-      if (!isset($isExisting))
+      if ($isExisting)
       {
-        $CountERROR = count(!empty($PASS_STUDENT));
+        $CountERROR = count($PASS_STUDENT);
         $textExisting ="<br><br>Following Student(s) have been already passed this type of exam: <br>";
         $textExisting .= "<ul>";
         for($i=0;$i<$CountERROR;$i++)
@@ -72,7 +72,7 @@ if (isset($_POST['btnAddStudent']))		//Add student from Exam
       
 			if ($query_insert)
       {
-				notify("Student Assigned","Successfully Assigned student to this Exam." .(!empty($textExisting)),NULL,TRUE,5000);
+				notify("Student Assigned","Successfully Assigned student to this Exam." .$textExisting,NULL,TRUE,5000);
 				$db->commit();
       }
 			else
@@ -324,7 +324,7 @@ $excelUpload = TRUE;
 
 <div class="row">
 	<div class="col-md-12">
-	<form method="post" enctype="multipart/form-data" class="form-horizontal" id="upload">
+		<form method="post" enctype="multipart/form-data" class="form-horizontal" id="upload">
       <fieldset>
       	<legend>Upload Excel File (Student Details)</legend>
       	<label class="col-md-3">Upload Excel File (*.xls)</label>
@@ -332,8 +332,7 @@ $excelUpload = TRUE;
         <input type="file" accept="application/vnd.ms-excel" id="excel_file" name="excel_file" class="form-control">
         <input type="hidden" name="excel_upload">
         <strong><u>Note:</u> Excel File should have only one sheet and 3 columns<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        (column 1 = IT Serial No; column 2 = Reg No. & column 3 = Student Name)</strong> </div>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(column 1 = IT Serial No; column 2 = Reg No. & column 3 = Student Name)</strong> </div>
         <div class="col-md-2">
         	<button class="btn btn-danger btn-sm" type="button" id="btnClean"><i class="fa fa-trash"></i> Clear File</button>
         </div>
@@ -380,7 +379,6 @@ if ($no_of_assigned_student > 0)
       <fieldset>
         <legend>Assigned Student</legend>
 					<table class="table table-bordered" id="exam_student_list">
-		<thead>
           	<tr>
             	<th width="5%">SN</th>
             	<th width="10%">IT Serial Number</th>
@@ -390,18 +388,16 @@ if ($no_of_assigned_student > 0)
               <th>
               <div class="tooltip-demo" style="width:180px;"><button title="Select All" class="btn btn-primary btn-sm btn-circle" type="button" name="select-all" id="select-all1"  data-toggle-tooltip="tooltip" data-placement="top"><i class="fa fa-check-square-o"></i></button>&nbsp;<button class="btn btn-warning btn-circle btn-sm" type="button" name="deselect-all" id="deselect-all1" title="De-select all"  data-toggle-tooltip="tooltip" data-placement="top"><i class="fa fa-square-o"></i></button>
                  </div>
-				</th>
+</th>
             </tr>
-        </thead>
 <?php
 unset($no_of_std);
 
-$SNO =0;
 while ($rowAssigned = $db->fetch_object($query_assigned_student))
 {
 ?>
           	<tr>
-            	<td><?php  echo ++$SNO;?></td>
+            	<td><?php echo ++$SNO;?></td>
             	<td width="10%"><?php echo $rowAssigned->it_serial;?></td>
               <td width="10%"><?php echo $rowAssigned->reg_no;?></td>
               <td><?php echo $rowAssigned->name;?>
@@ -430,7 +426,6 @@ $('#deselect-all1').click(function(event) {
             </tr>
 <?php
 }
-$no_of_std =1;
 $no_of_std++;
 if ($no_of_std > 0)
 {
@@ -493,7 +488,6 @@ if ($no_of_assigned_student > 0)
       <fieldset>
         <legend>Not Assigned Student</legend>
 					<table class="table table-bordered" id="exam_student_list">
-			<thead>
           	<tr>
             	<th width="5%">SN</th>
             	<th width="10%">IT Serial Number</th>
@@ -502,17 +496,16 @@ if ($no_of_assigned_student > 0)
               <th>
               <div class="tooltip-demo" style="width:180px;"><button title="Select All" class="btn btn-primary btn-sm btn-circle" type="button" name="select-all" id="select-all2"  data-toggle-tooltip="tooltip" data-placement="top"><i class="fa fa-check-square-o"></i></button>&nbsp;<button class="btn btn-warning btn-circle btn-sm" type="button" name="deselect-all" id="deselect-all2" title="De-select all"  data-toggle-tooltip="tooltip" data-placement="top"><i class="fa fa-square-o"></i></button>
                  </div>
-				</th>
+</th>
             </tr>
-         	</thead>    
 <?php
 unset($no_of_std);
-$SNO =0;
+
 while ($rowAssigned = $db->fetch_object($query_assigned_student))
 {
 ?>
           	<tr>
-            	<td><?php  echo ++$SNO;?></td>
+            	<td><?php echo ++$SNO;?></td>
             	<td width="10%"><?php echo $rowAssigned->it_serial;?></td>
               <td width="10%"><?php echo $rowAssigned->reg_no;?></td>
               <td><?php echo $rowAssigned->name;?>
@@ -540,7 +533,6 @@ $('#deselect-all2').click(function(event) {
             </tr>
 <?php
 }
-$no_of_std = 1;
 $no_of_std++;
 if ($no_of_std > 0)
 {
