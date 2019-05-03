@@ -152,17 +152,17 @@ if ($_SESSION['ONLINE-EXAM-SIMULATOR-ADMIN-USER'])
 		// not accepted
 
 
-		if ($exam_type_view || $exam_type_change || $exam_type_question) $isExamType = TRUE;
+		if (!empty($exam_type_view) || (!empty($exam_type_change)) || (!empty($exam_type_question))) $isExamType = TRUE;
 
-		if ($question_change || $question_view) $isQuestion = TRUE;
+		if (!empty($question_change) || (!empty($question_view))) $isQuestion = TRUE;
 
-		if ($exam_center_view || $exam_center_change) $isCenter = TRUE;
+		if (!empty($exam_center_view) || (!empty($exam_center_change))) $isCenter = TRUE;
 
-		if ($exam_view ||  $exam_change || $exam_question || $exam_student || $exam_schedule || $exam_time) $isExam = TRUE;
+		if (!empty($exam_view) ||  (!empty($exam_change)) || (!empty($exam_question)) || (!empty($exam_student)) || (!empty($exam_schedule)) || (!empty($exam_time))) $isExam = TRUE;
 
-		if ($student_view || $student_change || $student_result ) $isStudent = TRUE;
+		if (!empty($student_view) || (!empty($student_change)) || (!empty($student_result))) $isStudent = TRUE;
 
-		if ($user_view || $user_change || $user_reset_pw || $user_user_perm) $isUser = TRUE;
+		if (!empty($user_view) || (!empty($user_change)) || (!empty($user_reset_pw)) || (!empty($user_user_perm))) $isUser = TRUE;
 
 
 $db_backup  = ''; 
@@ -192,7 +192,7 @@ if( isset( $_GET['db_backup '])) {
 		$perm_folder = $folder[0];
 		$page_link = $folder[1];
 		unset($folder, $txtQuestion, $txtExam, $txtType, $txtCenter, $txtStudent);
-		if ($perm_folder == "type" && $isExamType) 	//Exam Type
+		if ($perm_folder == "type" && (!empty($isExamType))) 	//Exam Type
 		{
 			if ($page_link == "list.php" && $exam_type_view) 	$isPermission = TRUE ;
 			if ( ($page_link == "add.php" || $page_link == "edit.php") && $exam_type_change) 	$isPermission = TRUE ;
@@ -271,23 +271,23 @@ if( isset( $_GET['perm_folder']))
                 </a>
               </li>
             <?php 
-						if ($isExamType == TRUE)
+						if (!empty($isExamType) == TRUE)
 						{ 
 						?>  
               <li><a href="<?php echo $URL;?>type/list.html"<?php if (isset($txtType)) echo " class=\"active\"";?>><i class="fa fa-wrench fa-fw"></i> Exam Type List</a></li>
             <?php 
 						} 
-						if ($isQuestion) 
+						if (isset($isQuestion)) 
 						{ 
 						?>  
               <li><a href="<?php echo $URL;?>question/list.html"<?php if (isset($txtQuestion)) echo " class=\"active\"";?>><i class="fa fa-question-circle fa-fw"></i> Question Bank</a></li>
-            <?php } if ($isCenter) { ?>
+            <?php } if (isset($isCenter)) { ?>
               <li><a href="<?php echo $URL;?>center/list.html"<?php if (isset($txtCenter)) echo " class=\"active\"";?>><i class="fa fa-university fa-fw"></i> Center List</a></li>
-            <?php } if ($isExam) { ?>  
+            <?php } if (isset($isExam)) { ?>  
               <li><a href="<?php echo $URL;?>exam/list.html"<?php if (isset($txtExam)) echo " class=\"active\"";?>><i class="fa fa-edit fa-fw"></i> Exam List</a></li>
-            <?php } if ($isStudent) { ?>  
+            <?php } if (isset($isStudent)) { ?>  
               <li><a href="<?php echo $URL;?>student/list.html"<?php if (isset($txtStudent)) echo " class=\"active\"";?>><i class="fa fa-graduation-cap fa-fw"></i> Student List</a></li>
-            <?php } if ($isUser) { ?>  
+            <?php } if (isset($isUser)) { ?>  
               <li><a href="<?php echo $URL;?>user/list.html"<?php if(isset($txtUser)) echo " class=\"active\"";?>><i class="fa fa-users fa-fw"></i> Users</a></li>
             <?php } if(isset($isSuperUser)) { ?>
               <li><a href="#" name="db_backup" data-class="btn btn-success" class="backup" data-target="#backup-modal" data-toggle="modal" data-url="<?php echo $MAIN_URL;?>backup.html"><i class="fa fa-database fa-fw"></i> Database Backup</a>

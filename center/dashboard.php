@@ -1,5 +1,5 @@
 <?php 
-session_start();
+@session_start();
 if (file_exists("security.php")) include_once "security.php";
 if (!$_SESSION['ONLINE-EXAM-SIMULATOR-CENTER-USER'])
 	echo "<script>window.location='" .$MAIN_URL."start.html';</script>";  

@@ -1,5 +1,5 @@
 <?php
-session_start();
+@session_start();
 
 if (file_exists("security.php")) include_once "security.php";
 if (file_exists("../security.php")) include_once "../security.php";
@@ -612,20 +612,20 @@ $_SESSION['center_exam_list']['rand'] = $rand;
       <form method="post" class="form-inline">
         <div class="form-group">
           <select class="form-control" name="exam_type" title="Select Exam Type">
-            <option value="1"<?php if ($exam_status == 1) echo " selected=\"selected\"";?>>All Exam Type</option>
-            <option value="2"<?php if ($exam_status == 2) echo " selected=\"selected\"";?>>Not Scheduled Exam</option>
-            <option value="3"<?php if ($exam_status == 3) echo " selected=\"selected\"";?>>Scheduled Exam</option>
-            <option value="4"<?php if ($exam_status == 4) echo " selected=\"selected\"";?>>Schedule Expire Exam</option>
-            <option value="5"<?php if ($exam_status == 5) echo " selected=\"selected\"";?>>Running Exam</option>
-            <option value="6"<?php if ($exam_status == 6) echo " selected=\"selected\"";?>>Exam Not Sent for Approval</option>
-            <option value="7"<?php if ($exam_status == 7) echo " selected=\"selected\"";?>>Awaiting Approval</option>
-            <option value="8"<?php if ($exam_status == 8) echo " selected=\"selected\"";?>>Result Published</option>
+            <option value="1"<?php if (!empty($exam_status) == 1) echo " selected=\"selected\"";?>>All Exam Type</option>
+            <option value="2"<?php if (!empty($exam_status) == 2) echo " selected=\"selected\"";?>>Not Scheduled Exam</option>
+            <option value="3"<?php if (!empty($exam_status) == 3) echo " selected=\"selected\"";?>>Scheduled Exam</option>
+            <option value="4"<?php if (!empty($exam_status) == 4) echo " selected=\"selected\"";?>>Schedule Expire Exam</option>
+            <option value="5"<?php if (!empty($exam_status) == 5) echo " selected=\"selected\"";?>>Running Exam</option>
+            <option value="6"<?php if (!empty($exam_status) == 6) echo " selected=\"selected\"";?>>Exam Not Sent for Approval</option>
+            <option value="7"<?php if (!empty($exam_status) == 7) echo " selected=\"selected\"";?>>Awaiting Approval</option>
+            <option value="8"<?php if (!empty($exam_status) == 8) echo " selected=\"selected\"";?>>Result Published</option>
           </select>
 
           <select class="form-control" name="date_type" title="Select Date Type" id="date_type">
             <option value="1">Select Date Type</option>
-            <option value="2"<?php if ($date_type == 2) echo " selected=\"selected\"";?>>Start Date</option>
-            <option value="3"<?php if ($date_type == 3) echo " selected=\"selected\"";?>>End Date</option>
+            <option value="2"<?php if (!empty($date_type) == 2) echo " selected=\"selected\"";?>>Start Date</option>
+            <option value="3"<?php if (!empty($date_type) == 3) echo " selected=\"selected\"";?>>End Date</option>
           </select>
 					
 					<span id="date-time-exam" style="display: none;">

@@ -1,11 +1,11 @@
 <?php
-session_start();
+@session_start();
 define ("WEB-PROGRAM","Online Exam");
 define ("CODER","Sunil Kumar K. C.");
 include_once "header.inc.php";
 $now = time(); // Checking the time now when home page starts.
 
-if (!$isPermission)
+if (!empty(!$isPermission))
 {
 	notify("User Permission","<br><font color=red>You don't have permission to view this page.</font><br>&nbsp;",$URL."dashboard.html",TRUE,NULL);
 //	notify("User Permission","<br><font color=red>You don't have permission to view this page.</font><br>&nbsp;",$URL."dashboard.html",TRUE,5000);

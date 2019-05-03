@@ -239,13 +239,12 @@ else
       <h3 style="margin-top:0px; margin-bottom:0px;"><span class="fa fa-users"></span> Users List</h3>
     </div>
 <?php
-$disabled_add=0;
 if (!$user_change)
   $disabled_add = " disabled=\"disabled\"";
 ?>
     <div class="col-md-3 pull-right">    
       <form method="post" class="pull-right form-inline" action="add.html">
-        <button type="submit" name="btnAddNew" id="btnAddNew" class="btn btn-primary"<?php echo $disabled_add;unset($disabled_add);?>><span class="fa fa-user-plus"></span> Add New User </button>
+        <button type="submit" name="btnAddNew" id="btnAddNew" class="btn btn-primary"<?php echo (!empty($disabled_add));unset($disabled_add);?>><span class="fa fa-user-plus"></span> Add New User </button>
       </form>
     </div>
   </div>
@@ -300,7 +299,7 @@ if (!$user_change)
 									$strCenter = "SELECT center_name from exam_center WHERE center_id = '$row->center_id'";
 									$query_center = $db->query($strCenter);
 									$row_center = $db->fetch_object($query_center);
-									echo $row_center->center_name;
+									echo (!empty($row_center->center_name));
 									$db->free($query_center);
 									unset($row_center, $query_center, $strCenter);
 								}
@@ -347,12 +346,11 @@ else
 		no_permission("User Permission","<br><font color=red>You don't have permission to do this action.</font><br>&nbsp;","edit","edit_modal",$rand,1);
 		no_permission("User Permission","<br><font color=red>You don't have permission to do this action.</font><br>&nbsp;","delete","delete_modal",$rand,3);
 }
-$user_reset_pw=0;
 if ($user_reset_pw)
 	confirm2("User List","Do you want to reset password of this user?","resetpw","reset_pw_modal",$rand,2);
 else
 		no_permission("User Permission","<br><font color=red>You don't have permission to do this action.</font><br>&nbsp;","resetpw","reset_pw_modal",$rand,2);
-$user_user_perm=0;
+
 if ($user_user_perm)		
 	confirm3("User Permission","Do you want to <b>View/Edit Permissions </b> of this user?","permission","permission-modal",$rand,"_permission");
 else

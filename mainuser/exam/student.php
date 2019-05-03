@@ -228,7 +228,7 @@ if (isset($_POST['btnUpdateStudent']))
 
 				if ($no_of_student_exam == 0)
 				{
-					$txt_rand_pass =  RandomString(8);
+					$txt_rand_pass =  RandomString(4);
 					$randPass = base64_encode($txt_rand_pass);
 					$txtPass = pacrypt($txt_rand_pass,"");
 	
