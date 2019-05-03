@@ -1,5 +1,6 @@
 <?php
 @session_start();
+error_reporting(0);
 if (file_exists("security.php")) include_once "security.php";
 if (file_exists("../security.php")) include_once "../security.php";
 if (file_exists("../../security.php")) include_once "../../security.php";
@@ -153,15 +154,38 @@ if (isset($_POST['btnUpdateStudent']))
           }
 				}
 
+
 				if ( (strlen($it_serial) > 0) && (strlen($reg_number) > 0)) // NOT IT SERIAL AND BLANK REG_NUMBER 
 				{
+
+					$exam_code = $_SESSION["exam_code"];
+					 
+
+					$exam_typeSELECT = $db->query("SELECT exam_exam_type.exam_type FROM (exam_exam_type exam_exam_type  LEFT OUTER JOIN exam_exam exam_exam ON (exam_exam_type.exam_type_id=exam_exam.exam_type_id)) WHERE exam_exam.exam_code = '$exam_code';");
+
+					$exam_type = $exam_typeSELECT->fetch_assoc();
+
+					$no_of_student = $db->num_rows($exam_type);
+
+					$result=($exam_type['exam_type']);
+					$getresult = substr($result, 0,2);
+				 	
+				 	$serial = substr($it_serial,0,2);
+					 
+
 					$strSELECT = "SELECT it_serial from exam_student WHERE it_serial = '$it_serial' OR reg_no='$reg_number';";
 					$no_of_std = $db->num_rows($db->query($strSELECT));
 
-					if ($no_of_std == 0)
+					if ($no_of_std == 0 && $getresult==$serial)
 					{
 						$student_id++;
 						$strINSERT = "INSERT INTO exam_student (student_id, it_serial, reg_no, name) VALUES ('$student_id', '$it_serial', '$reg_number', '$student_name');";
+						$db->begin();
+						$query_student = $db->query($strINSERT) ;
+					}
+					else if ($no_of_std > 0 && $getresult==$serial)
+					{
+						$strINSERT = "UPDATE exam_student SET reg_no='$reg_number', name='$student_name' WHERE it_serial='$it_serial' AND reg_no='$reg_number';";
 						$db->begin();
 						$query_student = $db->query($strINSERT) ;
 					}
@@ -280,14 +304,18 @@ $excelUpload = TRUE;
   	<div class="col-md-9">
       <h3 style="margin-top:0px; margin-bottom:0px;"><i class="fa fa-graduation-cap"> </i> Student for Exam '<?php 
 
-			$strExamCode = "SELECT * FROM exam_exam_center WHERE exam_id = '$exam_id';";
+		
+	$strExamCode = "SELECT * FROM exam_exam_center WHERE exam_id = '$exam_id';";
 		$query_exam_code = $db->query($strExamCode);
 		$no_of_exam_code = $db->num_rows($query_exam_code);
 
-		if ($no_of_exam_code > 1) 
+		if ($no_of_exam_code > 1){
 			$MultipleCenter = TRUE;
-		else 
+		}
+		else{
+			$exam_code = $_SESSION["exam_code"] = $exam_code;
 			$MultipleCenter = FALSE;
+		}
 
 		if ($MultipleCenter)
 		{
@@ -298,16 +326,24 @@ $excelUpload = TRUE;
 			if ($no_of_exam_code2 > 0) 
 			{
 				$row_exam_code2 = $db->fetch_object($query_exam_code2);
-				if ($row_exam_code2 != NULL)
+				if ($row_exam_code2 != NULL){
 					echo "<span title=\"Center Exam Code\">$row_exam_code2->exam_code</span>";
-				else
+					$exam_code = $_SESSION["exam_code"] = $row_exam_code2->exam_code;
+				}
+				else{
 					echo $exam_code;
+					$exam_code = $_SESSION["exam_code"] = $exam_code;
+				}
 			}
-			else
+			else{
 				echo $exam_code;
+				$exam_code = $_SESSION["exam_code"] = $exam_code;
+			}
 		}
-		else
+		else{
 			echo $exam_code;
+			$exam_code = $_SESSION["exam_code"] = $exam_code;
+		}
 			
 			?>' and Exam Center '<?php echo $center_name;?>'</h3>
     </div>

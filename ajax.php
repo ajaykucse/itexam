@@ -215,8 +215,11 @@ unset($query_total, $strTotal, $rowTotal);
 		{
 			$FileName = $_FILES['excel_file']['tmp_name'];
 			$fileSize = $_FILES['excel_file']['size'];
+
 			if ($fileSize < 1)
 			{
+				$_SESSION["fileSize"] = ''; 
+
 				$error[]="Blank File Uploaded.";	
 				$isError = TRUE;
 			}
@@ -612,8 +615,8 @@ FROM (exam_exam_student    exam_exam_student
 ";        
 		$query_student = $db->query($strSelectStudent);
     $row_std = $db->fetch_object($query_student);
-    $full_mark = $row_std->full_mark;
-    $pass_mark = $row_std->pass_mark;
+    $full_mark = (!empty($row_std->full_mark));
+    $pass_mark = (!empty($row_std->pass_mark));
     $db->free($query_student);
     unset($row_std);
     
@@ -626,7 +629,20 @@ FROM (exam_exam_student    exam_exam_student
     <div align="center">
       <b>The Institute of Chartered Accountants of Nepal</b><br>
       Satdobato, Lalitpur<br>
-      60 Hours  IT Training Course<br>
+        <?php
+
+      $exam3 = $_SESSION["exam_code"];
+					 
+
+					$exam_typeSELECT = $db->query("SELECT exam_exam_type.exam_type FROM (exam_exam_type exam_exam_type  LEFT OUTER JOIN exam_exam exam_exam ON (exam_exam_type.exam_type_id=exam_exam.exam_type_id)) WHERE exam_exam.exam_code = '$exam3';");
+
+					$exam_type = $exam_typeSELECT->fetch_assoc();
+
+					 
+					$result=($exam_type['exam_type']);
+					$getresult = substr($result, 0,2);
+
+					 echo "$getresult"; ?> Hours  IT Training Course<br>
     <strong>Exam Score Sheet</strong> </div>
 <br>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -637,15 +653,21 @@ FROM (exam_exam_student    exam_exam_student
           $str_center = "SELECT exam_code FROM exam_exam WHERE exam_id= '$exam_id';";
           $query_center = $db->query($str_center);
           $row_center = $db->fetch_object($query_center);
+          $exam3 = $_SESSION["exam_code"] = $row_center->exam_code;
+
 
 		$strExamCode = "SELECT * FROM exam_exam_center WHERE exam_id = '$exam_id';";
 		$query_exam_code = $db->query($strExamCode);
 		$no_of_exam_code = $db->num_rows($query_exam_code);
 
+
+
 		if ($no_of_exam_code > 1) 
 			$MultipleCenter = TRUE;
-		else 
+		else{
+			$exam3 = $_SESSION["exam_code"] = $row_center->exam_code;
 			$MultipleCenter = FALSE;
+		}
 
 		if ($MultipleCenter)
 		{
@@ -656,17 +678,24 @@ FROM (exam_exam_student    exam_exam_student
 			if ($no_of_exam_code2 > 0) 
 			{
 				$row_exam_code2 = $db->fetch_object($query_exam_code2);
-				if ($row_exam_code2 != NULL)
+				if ($row_exam_code2 != NULL){
 					$exam_code2 = "<span title=\"Center Exam Code\">$row_exam_code2->exam_code</span>";
-				else
-					$exam_code2 = $row_center->exam_code;
+					$exam3 = $_SESSION["exam_code"] = $row_exam_code2->exam_code;
+				}
+				else{
+					$exam = $row_center->exam_code;
+					$exam3 = $_SESSION["exam_code"] = $exam_code2;
+				}
 			}
-			else
+			else{
 				$exam_code2 = $row_center->exam_code;
+				$exam3 = $_SESSION["exam_code"] = $exam_code2;
+			}
 		}
-		else
+		else{
 			$exam_code2 = $row_center->exam_code;
-          
+			$exam3 = $_SESSION["exam_code"] = $exam_code2;
+          }
           echo "<u>$exam_code2</u>";
           unset($row_center, $str_center, $query_center);
            ;?></td>
@@ -718,12 +747,13 @@ SELECT exam_center.center_name
         </thead>
         <tbody>
 		<?php
+			$SN=0;
 			while ($row_student = $db->fetch_object($query_student))
 			{
-				$mcq = $row_student->mcq_mark;
-				$practical = $row_student->practical_mark;
-				$total_mark = $mcq + $practical;
-				$center_id = $row_student->center_id;
+				$mcq = (!empty($row_student->mcq_mark));
+				$practical = (!empty($row_student->practical_mark));
+				$total_mark = (!empty($mcq + $practical));
+				$center_id = (!empty($row_student->center_id));
 				?>
           <tr style="height:50px;">
             <td width="5%"><?php echo ++$SN;?></td>
@@ -815,7 +845,21 @@ SELECT exam_exam.exam_code,
     <div align="center">
       <b>The Institute of Chartered Accountants of Nepal</b><br>
       Satdobato, Lalitpur<br>
-      60 Hours  IT Training Course<br>
+      <?php
+
+      $exam2 = $_SESSION["exam_code"];
+					 
+
+					$exam_typeSELECT = $db->query("SELECT exam_exam_type.exam_type FROM (exam_exam_type exam_exam_type  LEFT OUTER JOIN exam_exam exam_exam ON (exam_exam_type.exam_type_id=exam_exam.exam_type_id)) WHERE exam_exam.exam_code = '$exam2';");
+
+					$exam_type = $exam_typeSELECT->fetch_assoc();
+
+					$no_of_student = $db->num_rows($exam_type);
+
+					$result=($exam_type['exam_type']);
+					$getresult = substr($result, 0,2);
+
+					 echo "$getresult";?> Hours  IT Training Course<br>
 <strong>Exam Score Sheet</strong> </div>
 <br>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -826,6 +870,7 @@ SELECT exam_exam.exam_code,
           $str_center = "SELECT exam_code FROM exam_exam WHERE exam_id= '$exam_id';";
           $query_center = $db->query($str_center);
           $row_center = $db->fetch_object($query_center);
+          $exam2 = $_SESSION["exam_code"] = $row_center->exam_code;
 
 		$strExamCode = "SELECT * FROM exam_exam_center WHERE exam_id = '$exam_id';";
 		$query_exam_code = $db->query($strExamCode);
@@ -833,8 +878,10 @@ SELECT exam_exam.exam_code,
 
 		if ($no_of_exam_code > 1) 
 			$MultipleCenter = TRUE;
-		else 
+		else {
+			$exam2 = $_SESSION["exam_code"] =$row_center->exam_code;
 			$MultipleCenter = FALSE;
+		}
 
 		if ($MultipleCenter)
 		{
@@ -845,17 +892,24 @@ SELECT exam_exam.exam_code,
 			if ($no_of_exam_code2 > 0) 
 			{
 				$row_exam_code2 = $db->fetch_object($query_exam_code2);
-				if ($row_exam_code2 != NULL)
+				if ($row_exam_code2 != NULL){
 					$exam_code2 = "<span title=\"Center Exam Code\">$row_exam_code2->exam_code</span>";
-				else
+					$exam2 = $_SESSION["exam_code"] = $row_exam_code2->exam_code;
+				}
+				else{
 					$exam_code2 = $row_center->exam_code;
+					$exam2 = $_SESSION["exam_code"] = $exam_code2;
+				}
 			}
-			else
+			else{
 				$exam_code2 = $row_center->exam_code;
+				$exam2 = $_SESSION["exam_code"] = $exam_code2;
+			}
 		}
-		else
+		else{
 			$exam_code2 = $row_center->exam_code;
-          
+			$exam2 = $_SESSION["exam_code"] = $exam_code2;
+          }
           echo "<u>$exam_code2</u>";
           unset($row_center, $str_center, $query_center);
            ;?></td>
@@ -1025,7 +1079,20 @@ SELECT exam_exam.exam_code,
     <div align="center">
       <b>The Institute of Chartered Accountants of Nepal</b><br>
       Satdobato, Lalitpur<br>
-      60 Hours  IT Training Course<br>
+        <?php
+
+      $exam1 = $_SESSION["exam_code"];
+					 
+
+					$exam_typeSELECT = $db->query("SELECT exam_exam_type.exam_type FROM (exam_exam_type exam_exam_type  LEFT OUTER JOIN exam_exam exam_exam ON (exam_exam_type.exam_type_id=exam_exam.exam_type_id)) WHERE exam_exam.exam_code = '$exam1';");
+
+					$exam_type = $exam_typeSELECT->fetch_assoc();
+
+					 
+					$result=($exam_type['exam_type']);
+					$getresult = substr($result, 0,2);
+
+					 echo "$getresult"; ?> Hours  IT Training Course<br>
     <strong>Exam Score Sheet</strong> </div>
 <br>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -1036,6 +1103,7 @@ SELECT exam_exam.exam_code,
           $str_center = "SELECT exam_code FROM exam_exam WHERE exam_id= '$exam_id';";
           $query_center = $db->query($str_center);
           $row_center = $db->fetch_object($query_center);
+          $exam1 = $_SESSION["exam_code"] = $row_center->exam_code;
 
 		$strExamCode = "SELECT * FROM exam_exam_center WHERE exam_id = '$exam_id';";
 		$query_exam_code = $db->query($strExamCode);

@@ -85,13 +85,13 @@ if (!$exam_type_change)
         </thead>
         <tbody>
 <?php
+$SN =0;
 while ($row = $db->fetch_object($query_result))
 {
 ?>
           <tr>
             <td style="width:10px"><?php
-
-            $SN ='';
+            
           if(isset($_Get['SN']))
             $SN = $_Get['SN'];
 

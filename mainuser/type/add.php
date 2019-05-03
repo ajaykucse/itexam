@@ -50,7 +50,7 @@ if (isset($_POST['btnAddType']))
 		}
 		else
 		{
-			$select_exam_code = "SELECT exam_type FROM exam_exam_type WHERE exam_type = UPPER('$exam_type');";
+			$select_exam_code = "SELECT exam_type FROM exam_exam_type WHERE exam_type = ('$exam_type');";
 			$query_exam_code = $db->query($select_exam_code);
 			$no_of_exam_code = $db->num_rows($query_exam_code);
 			if ($no_of_exam_code > 0)
@@ -210,7 +210,7 @@ wysiwyg_script($MAIN_URL);
                 <div class="form-group">
                   <label class="col-md-6">Exam Module Name / Type<font color="red"> *</font></label>
                   <div class="col-md-6">
-                  <input type="text" name="exam_type" id="exam_type" class="form-control" value="<?php 
+                  <input type="text" name="exam_type" id="exam_type" class="form-control" autocomplete="off" value="<?php 
 
 
                     $exam_type ='';
@@ -402,7 +402,7 @@ wysiwyg_script($MAIN_URL);
     </script>
     
       <div>
-        <button title="Add New Exam Type" class="btn btn-success create_exam" style="margin-left:33%;" type="submit" id="btnAddType2" name="btnAddType2"  data-id="<?php echo $step;?>" data-button="btnAddType" data-class="btn btn-success" data-input-name="step" data-target="#create_exam" data-toggle="modal" data-url=""  data-toggle-tooltip="tooltip" data-placement="top">Add New Exam Type</button>
+        <button title="Add New Exam Type" class="btn btn-success create_exam" style="margin-left:33%;" type="submit" id="btnAddType2" name="btnAddType2"  data-id="<?php echo (isset($step));?>" data-button="btnAddType" data-class="btn btn-success" data-input-name="step" data-target="#create_exam" data-toggle="modal" data-url=""  data-toggle-tooltip="tooltip" data-placement="top">Add New Exam Type</button>
         
         <input type="hidden" value="<?php echo $rand;?>" name="rand">
         <?php confirm2("Exam Type","All the information is correct?<br>If no, please click on \"No\"","create_exam","create_exam",$rand,1); ?>

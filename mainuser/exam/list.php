@@ -1251,16 +1251,20 @@ while ($row = $db->fetch_object($query_result))
 			if ($no_of_exam_code2 > 0) 
 			{
 				$row_exam_code2 = $db->fetch_object($query_exam_code2);
-				if ($row_exam_code2 != NULL)
+				if ($row_exam_code2 != NULL){
 					echo "<span title=\"Center Exam Code\">$row_exam_code2->exam_code</span>";
-				else
-					echo $row->exam_code ;
+				}
+				else{
+					echo $row->exam_code;
+				}
 			}
-			else
+			else{
 				echo $row->exam_code ;
+			}
 		}
-		else
+		else{
 			echo $row->exam_code ;
+		}
 	
 			?>
   <?php
@@ -1433,7 +1437,9 @@ else isset($full);
                 
               <button title="Question Selection" class="btn btn-default btn-circle btn-sm question" type="submit" id="btnQuestion2" name="btnQuestion2" data-id2="<?php echo $row->center_id;?>" data-input-name2="center_id" data-id="<?php echo $row->exam_id;?>" data-button="btnQuestion" data-class="btn btn-default" data-input-name="exam_id" data-target="#question-modal" data-toggle="modal" data-url="question.html"<?php echo (!empty($disabled));?> data-toggle-tooltip="tooltip" data-placement="top"<?php echo $sched;?><?php echo (!empty($full));?><?php echo $started;?>><span class="fa fa-question"></span></button>
                 
-              <button title="Student Selection" class="btn btn-primary btn-circle btn-sm student" type="submit" id="btnStudent2" name="btnStudent2" data-id="<?php echo $row->exam_id;?>" data-id2="<?php echo $row->center_id;?>" data-input-name2="center_id" data-button="btnStudent" data-class="btn btn-primary" data-input-name="exam_id" data-target="#student-modal" data-toggle="modal" data-url="student.html"<?php echo (!empty($disabled));?> data-toggle-tooltip="tooltip" data-placement="top"<?php echo $sched;?><?php echo (!empty($full));?><?php echo $started;?>><span class="fa fa-user-plus"></span></button>
+              <button title="Student Selection" class="btn btn-primary btn-circle btn-sm student" type="submit" id="btnStudent2" name="btnStudent2" data-id="<?php echo $row->exam_id;?>" data-id2="<?php echo $row->center_id;?>" data-input-name2="center_id" data-button="btnStudent" data-class="btn btn-primary" data-input-name="exam_id" data-target="#student-modal" data-toggle="modal" data-url="student.html"<?php echo (!empty($disabled));?> data-toggle-tooltip="tooltip" data-placement="top"<?php echo $sched;?><?php echo (!empty($full));?><?php echo $started;?>><span class="fa fa-user-plus"></span>
+              </button>
+
               <button title="Schedule Exam" class="btn btn-success btn-circle btn-sm schedule_exam" type="submit" id="btnScheduleExam2" name="btnScheduleExam2"  data-id="<?php echo $row->exam_id;?>" data-button="btnScheduleExam" data-class="btn btn-success" data-input-name="exam_id" data-id2="<?php echo $row->center_id;?>" data-input-name2="center_id" data-target="#schedule_exam_modal" data-toggle="modal" data-url="" data-toggle-tooltip="tooltip" data-placement="top" <?php echo (!empty($txt_schedule_date));?><?php echo (!empty($full));?><?php echo (!empty($no_of_question));?><?php echo (!empty($no_of_students));?> <?php echo $started;?>><span class="fa fa-calendar"></span></button>
                 
   <?php 
