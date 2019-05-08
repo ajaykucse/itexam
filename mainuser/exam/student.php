@@ -158,6 +158,12 @@ if (isset($_POST['btnUpdateStudent']))
 				if ( (strlen($it_serial) > 0) && (strlen($reg_number) > 0)) // NOT IT SERIAL AND BLANK REG_NUMBER 
 				{
 
+					$strSELECT = "SELECT reg_no from exam_student WHERE reg_no = '$reg_number';";
+
+
+					$no_of_students = $db->num_rows($strSELECT);
+
+
 					$exam_code = $_SESSION["exam_code"];
 					 
 
@@ -171,26 +177,31 @@ if (isset($_POST['btnUpdateStudent']))
 					$getresult = substr($result, 0,2);
 				 	
 				 	$serial = substr($it_serial,0,2);
-					 
 
-					$strSELECT = "SELECT it_serial from exam_student WHERE it_serial = '$it_serial' OR reg_no='$reg_number';";
-					$no_of_std = $db->num_rows($db->query($strSELECT));
 
-					if ($no_of_std == 0 && $getresult==$serial)
+
+					if ($$no_of_students > 0) {
+
+						echo "already in use";
+
+					}else{
+
+					if ($getresult==$serial)
 					{
 						$student_id++;
 						$strINSERT = "INSERT INTO exam_student (student_id, it_serial, reg_no, name) VALUES ('$student_id', '$it_serial', '$reg_number', '$student_name');";
 						$db->begin();
 						$query_student = $db->query($strINSERT) ;
 					}
-					else if ($no_of_std > 0 && $getresult==$serial)
-					{
-						$strINSERT = "UPDATE exam_student SET reg_no='$reg_number', name='$student_name' WHERE it_serial='$it_serial' AND reg_no='$reg_number';";
-						$db->begin();
-						$query_student = $db->query($strINSERT) ;
-					}
+					// else if ($no_of_std > 0 && $getresult==$serial )
+					// {
+					// 	$strINSERT = "UPDATE exam_student SET reg_no='$reg_number', name='$student_name' WHERE it_serial='$it_serial' AND reg_no='$reg_number';";
+					// 	$db->begin();
+					// 	$query_student = $db->query($strINSERT) ;
+					// }
 					else 
 						$query_student  = true;
+				}
 				} // NOT BLANK REG_NUMBER
 				unset($it_serial, $student_name, $SN, $reg_number);
 			}
@@ -228,7 +239,9 @@ if (isset($_POST['btnUpdateStudent']))
 
 				if ($no_of_student_exam == 0)
 				{
-					$txt_rand_pass =  RandomString(4);
+  					$data = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+  					$txt_rand_pass = substr(str_shuffle($data), 0, 4);
+					//$txt_rand_pass =  RandomString(4);
 					$randPass = base64_encode($txt_rand_pass);
 					$txtPass = pacrypt($txt_rand_pass,"");
 	
@@ -328,7 +341,7 @@ $excelUpload = TRUE;
 				$row_exam_code2 = $db->fetch_object($query_exam_code2);
 				if ($row_exam_code2 != NULL){
 					echo "<span title=\"Center Exam Code\">$row_exam_code2->exam_code</span>";
-					$exam_code = $_SESSION["exam_code"] = $row_exam_code2->exam_code;
+				$exam_code = $_SESSION["exam_code"] = $row_exam_code2->exam_code;
 				}
 				else{
 					echo $exam_code;

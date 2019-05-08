@@ -1445,7 +1445,7 @@ else isset($full);
   <?php 
 if ($row->schedule_date == NULL) 
 	$student = " disabled = \"disabled\"";
-else if ($no_of_student2 == 0)  
+else if (!empty($no_of_student2) == 0)  
 	$student = " disabled = \"disabled\"";
 else if ($row->end_time != NULL) 
 	$student = " disabled = \"disabled\"";

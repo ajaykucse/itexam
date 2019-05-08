@@ -1,5 +1,5 @@
 <?php 
-session_start();
+@session_start();
 define ("WEB-PROGRAM","Online Exam");
 define ("CODER","Sunil Kumar K. C.");
 if (file_exists("security.php")) include_once "security.php";
@@ -168,7 +168,7 @@ unset($query_total, $strTotal, $rowTotal);
 		echo $no_question;
 	}
 
-	if (isset($_FILES['file']) && FilterString($_POST['task']="image_upload") )
+	if ( isset($_FILES['file']) && FilterString($_POST['task']="image_upload") )
 	{
 		if ($_FILES['file']['name']) {
 			if (!$_FILES['file']['error']) {		
@@ -215,11 +215,8 @@ unset($query_total, $strTotal, $rowTotal);
 		{
 			$FileName = $_FILES['excel_file']['tmp_name'];
 			$fileSize = $_FILES['excel_file']['size'];
-
 			if ($fileSize < 1)
 			{
-				$_SESSION["fileSize"] = ''; 
-
 				$error[]="Blank File Uploaded.";	
 				$isError = TRUE;
 			}
@@ -245,7 +242,7 @@ unset($query_total, $strTotal, $rowTotal);
 	}
 	if ($field > 0);
 		echo "</tr>";
-		$SN=0;
+	$SN=0;
 		foreach ($data as $K => $val)
 		{
 			
@@ -290,7 +287,7 @@ unset($query_total, $strTotal, $rowTotal);
 	}
 
 
-	if (isset($_POST['chapter_no']) && ($_POST['task'] == "update_no_of_question") && ($_POST['exam_type_id']) && ($_POST['exam_id']) )
+	if ( isset($_POST['chapter_no']) && ($_POST['task'] == "update_no_of_question") && ($_POST['exam_type_id']) && ($_POST['exam_id']) )
 	{
 		$chapter_no = FilterNumber($_POST['chapter_no']);
 		$exam_type_id = FilterNumber($_POST['exam_type_id']);
@@ -444,7 +441,7 @@ $(".question").click(function() {
 	<?php
 	}
 
-	if (isset($_POST['exam_type_id']) && ($_POST['task'] == "view_exam_type") )
+	if ( isset($_POST['exam_type_id']) && ($_POST['task'] == "view_exam_type") )
 	{
 		$exam_type_id = FilterNumber($_POST['exam_type_id']);
 		$config = new config();
@@ -551,7 +548,7 @@ $(".question").click(function() {
 		$db->close();
 	}
 
-	if (isset($_POST['exam_id']) && ($_POST['task'] == "attendance-sheet") && ($_POST['user']) )
+	if ( ($_POST['exam_id']) && ($_POST['task'] == "attendance-sheet") && ($_POST['user']) )
 	{
 		$exam_id = FilterNumber($_POST['exam_id']);
 		$user = FilterString($_POST['user']);
@@ -614,35 +611,30 @@ FROM (exam_exam_student    exam_exam_student
 	WHERE exam_exam_student.exam_id = '$exam_id' $TXT_CENTER;
 ";        
 		$query_student = $db->query($strSelectStudent);
+
+		$student_info = $query_student->fetch_assoc();
+		$resultss=($student_info['it_serial']);
+
     $row_std = $db->fetch_object($query_student);
     $full_mark = (!empty($row_std->full_mark));
     $pass_mark = (!empty($row_std->pass_mark));
     $db->free($query_student);
-    unset($row_std);
+
+   unset($row_std);
     
 		$query_student = $db->query($strSelectStudent);
+
 		$no_of_student = $db->num_rows($query_student);
-	
+
+
 		if ($no_of_student > 0)
 		{
+			
 		?>
     <div align="center">
       <b>The Institute of Chartered Accountants of Nepal</b><br>
       Satdobato, Lalitpur<br>
-        <?php
-
-      $exam3 = $_SESSION["exam_code"];
-					 
-
-					$exam_typeSELECT = $db->query("SELECT exam_exam_type.exam_type FROM (exam_exam_type exam_exam_type  LEFT OUTER JOIN exam_exam exam_exam ON (exam_exam_type.exam_type_id=exam_exam.exam_type_id)) WHERE exam_exam.exam_code = '$exam3';");
-
-					$exam_type = $exam_typeSELECT->fetch_assoc();
-
-					 
-					$result=($exam_type['exam_type']);
-					$getresult = substr($result, 0,2);
-
-					 echo "$getresult"; ?> Hours  IT Training Course<br>
+      <?php echo substr($resultss, 0,2); ?> Hours  IT Training Course<br>
     <strong>Exam Score Sheet</strong> </div>
 <br>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -653,21 +645,15 @@ FROM (exam_exam_student    exam_exam_student
           $str_center = "SELECT exam_code FROM exam_exam WHERE exam_id= '$exam_id';";
           $query_center = $db->query($str_center);
           $row_center = $db->fetch_object($query_center);
-          $exam3 = $_SESSION["exam_code"] = $row_center->exam_code;
-
 
 		$strExamCode = "SELECT * FROM exam_exam_center WHERE exam_id = '$exam_id';";
 		$query_exam_code = $db->query($strExamCode);
 		$no_of_exam_code = $db->num_rows($query_exam_code);
 
-
-
 		if ($no_of_exam_code > 1) 
 			$MultipleCenter = TRUE;
-		else{
-			$exam3 = $_SESSION["exam_code"] = $row_center->exam_code;
+		else
 			$MultipleCenter = FALSE;
-		}
 
 		if ($MultipleCenter)
 		{
@@ -678,25 +664,19 @@ FROM (exam_exam_student    exam_exam_student
 			if ($no_of_exam_code2 > 0) 
 			{
 				$row_exam_code2 = $db->fetch_object($query_exam_code2);
-				if ($row_exam_code2 != NULL){
+				if ($row_exam_code2 != NULL)
 					$exam_code2 = "<span title=\"Center Exam Code\">$row_exam_code2->exam_code</span>";
-					$exam3 = $_SESSION["exam_code"] = $row_exam_code2->exam_code;
-				}
-				else{
-					$exam = $row_center->exam_code;
-					$exam3 = $_SESSION["exam_code"] = $exam_code2;
-				}
+				else
+					$exam_code2 = $row_center->exam_code;
 			}
-			else{
+			else
 				$exam_code2 = $row_center->exam_code;
-				$exam3 = $_SESSION["exam_code"] = $exam_code2;
-			}
 		}
-		else{
+		else
 			$exam_code2 = $row_center->exam_code;
-			$exam3 = $_SESSION["exam_code"] = $exam_code2;
-          }
-          echo "<u>$exam_code2</u>";
+			
+          	echo "<u>$exam_code2</u>";
+
           unset($row_center, $str_center, $query_center);
            ;?></td>
           <td width="25%"><strong>Exam Date</strong></td>
@@ -747,12 +727,12 @@ SELECT exam_center.center_name
         </thead>
         <tbody>
 		<?php
-			$SN=0;
+		$SN=0;
 			while ($row_student = $db->fetch_object($query_student))
 			{
 				$mcq = (!empty($row_student->mcq_mark));
 				$practical = (!empty($row_student->practical_mark));
-				$total_mark = (!empty($mcq + $practical));
+				$total_mark = $mcq + $practical;
 				$center_id = (!empty($row_student->center_id));
 				?>
           <tr style="height:50px;">
@@ -781,7 +761,7 @@ SELECT exam_center.center_name
 	}
 
 
-	if (isset($_POST['exam_id']) && ($_POST['task'] == "publish-result") && ($_POST['user']) )
+	if ( ($_POST['exam_id']) && ($_POST['task'] == "publish-result") && ($_POST['user']) )
 	{
 		$exam_id = FilterNumber($_POST['exam_id']);
 		$user = FilterString($_POST['user']);
@@ -845,21 +825,7 @@ SELECT exam_exam.exam_code,
     <div align="center">
       <b>The Institute of Chartered Accountants of Nepal</b><br>
       Satdobato, Lalitpur<br>
-      <?php
-
-      $exam2 = $_SESSION["exam_code"];
-					 
-
-					$exam_typeSELECT = $db->query("SELECT exam_exam_type.exam_type FROM (exam_exam_type exam_exam_type  LEFT OUTER JOIN exam_exam exam_exam ON (exam_exam_type.exam_type_id=exam_exam.exam_type_id)) WHERE exam_exam.exam_code = '$exam2';");
-
-					$exam_type = $exam_typeSELECT->fetch_assoc();
-
-					$no_of_student = $db->num_rows($exam_type);
-
-					$result=($exam_type['exam_type']);
-					$getresult = substr($result, 0,2);
-
-					 echo "$getresult";?> Hours  IT Training Course<br>
+      60 Hours  IT Training Course<br>
 <strong>Exam Score Sheet</strong> </div>
 <br>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -870,7 +836,6 @@ SELECT exam_exam.exam_code,
           $str_center = "SELECT exam_code FROM exam_exam WHERE exam_id= '$exam_id';";
           $query_center = $db->query($str_center);
           $row_center = $db->fetch_object($query_center);
-          $exam2 = $_SESSION["exam_code"] = $row_center->exam_code;
 
 		$strExamCode = "SELECT * FROM exam_exam_center WHERE exam_id = '$exam_id';";
 		$query_exam_code = $db->query($strExamCode);
@@ -878,10 +843,8 @@ SELECT exam_exam.exam_code,
 
 		if ($no_of_exam_code > 1) 
 			$MultipleCenter = TRUE;
-		else {
-			$exam2 = $_SESSION["exam_code"] =$row_center->exam_code;
+		else 
 			$MultipleCenter = FALSE;
-		}
 
 		if ($MultipleCenter)
 		{
@@ -892,24 +855,17 @@ SELECT exam_exam.exam_code,
 			if ($no_of_exam_code2 > 0) 
 			{
 				$row_exam_code2 = $db->fetch_object($query_exam_code2);
-				if ($row_exam_code2 != NULL){
+				if ($row_exam_code2 != NULL)
 					$exam_code2 = "<span title=\"Center Exam Code\">$row_exam_code2->exam_code</span>";
-					$exam2 = $_SESSION["exam_code"] = $row_exam_code2->exam_code;
-				}
-				else{
+				else
 					$exam_code2 = $row_center->exam_code;
-					$exam2 = $_SESSION["exam_code"] = $exam_code2;
-				}
 			}
-			else{
+			else
 				$exam_code2 = $row_center->exam_code;
-				$exam2 = $_SESSION["exam_code"] = $exam_code2;
-			}
 		}
-		else{
+		else
 			$exam_code2 = $row_center->exam_code;
-			$exam2 = $_SESSION["exam_code"] = $exam_code2;
-          }
+          
           echo "<u>$exam_code2</u>";
           unset($row_center, $str_center, $query_center);
            ;?></td>
@@ -1015,7 +971,7 @@ if ($no_of_abs < 1) $txtAbs = TRUE;
 	}
 
 
-	if (isset($_POST['exam_id']) && ($_POST['task'] == "print-result") && ($_POST['user']) )
+	if ( ($_POST['exam_id']) && ($_POST['task'] == "print-result") && ($_POST['user']) )
 	{
 		$exam_id = FilterNumber($_POST['exam_id']);
 		$user = FilterString($_POST['user']);
@@ -1079,20 +1035,7 @@ SELECT exam_exam.exam_code,
     <div align="center">
       <b>The Institute of Chartered Accountants of Nepal</b><br>
       Satdobato, Lalitpur<br>
-        <?php
-
-      $exam1 = $_SESSION["exam_code"];
-					 
-
-					$exam_typeSELECT = $db->query("SELECT exam_exam_type.exam_type FROM (exam_exam_type exam_exam_type  LEFT OUTER JOIN exam_exam exam_exam ON (exam_exam_type.exam_type_id=exam_exam.exam_type_id)) WHERE exam_exam.exam_code = '$exam1';");
-
-					$exam_type = $exam_typeSELECT->fetch_assoc();
-
-					 
-					$result=($exam_type['exam_type']);
-					$getresult = substr($result, 0,2);
-
-					 echo "$getresult"; ?> Hours  IT Training Course<br>
+      60 Hours  IT Training Course<br>
     <strong>Exam Score Sheet</strong> </div>
 <br>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -1103,7 +1046,6 @@ SELECT exam_exam.exam_code,
           $str_center = "SELECT exam_code FROM exam_exam WHERE exam_id= '$exam_id';";
           $query_center = $db->query($str_center);
           $row_center = $db->fetch_object($query_center);
-          $exam1 = $_SESSION["exam_code"] = $row_center->exam_code;
 
 		$strExamCode = "SELECT * FROM exam_exam_center WHERE exam_id = '$exam_id';";
 		$query_exam_code = $db->query($strExamCode);
@@ -1256,7 +1198,7 @@ if ($no_of_abs < 1) $txtAbs = TRUE;
 	}
 
 	
-	if (isset($_POST['center_id']) &&  ($_POST['exam_id']) && ($_POST['task'] == "student_login_admin") )
+	if ( ($_POST['center_id']) &&  ($_POST['exam_id']) && ($_POST['task'] == "student_login_admin") )
 	{
 		$exam_id = FilterNumber($_POST['exam_id']);
 		$center_id = FilterNumber($_POST['center_id']);
@@ -1391,7 +1333,7 @@ if ($no_of_abs < 1) $txtAbs = TRUE;
 		}
 	}
 
-	if (isset($_POST['exam_id']) && ($_POST['task'] == "student_login") )
+	if ( ($_POST['exam_id']) && ($_POST['task'] == "student_login") )
 	{
 		$exam_id = FilterNumber($_POST['exam_id']);
 		$center_id = FilterNumber($_SESSION['user']['center_id']);
@@ -1516,7 +1458,7 @@ if ($no_of_abs < 1) $txtAbs = TRUE;
 		}
 	}
 	
-	if (isset($_POST['exam_id']) && ($_POST['task'] == "view_exam") )
+	if ( ($_POST['exam_id']) && ($_POST['task'] == "view_exam") )
 	{
 		$exam_id = FilterNumber($_POST['exam_id']);
 		$center_id = FilterNumber($_POST['center_id']);
@@ -1705,7 +1647,6 @@ GROUP BY exam_exam_question.exam_id, exam_exam_question.chapter_no;
 			$no_of_student = $db->num_rows($query_student);
 			if ($no_of_student > 0)
 			{
-				$SN=0;
 				while ($row_student = $db->fetch_object($query_student))
 				{
 			?>
@@ -1745,7 +1686,7 @@ GROUP BY exam_exam_question.exam_id, exam_exam_question.chapter_no;
 		$db->close();
 	}
 	
-	if (isset($_POST['no_of_answer']) && ($_POST['answer_type']) && ($_POST['question_id']) && ($_POST['type']=="edit")  )
+	if ( isset($_POST['no_of_answer']) && ($_POST['answer_type']) && ($_POST['question_id']) && ($_POST['type']=="edit")  )
 	{
 	
 		$config = new config();
@@ -1799,7 +1740,7 @@ GROUP BY exam_exam_question.exam_id, exam_exam_question.chapter_no;
 		$db->close();
 	}
 
-	if(isset($_POST['no_of_answer']) && ($_POST['answer_type']) && ($_POST['type']=="add" ))
+	if ( isset($_POST['no_of_answer']) && $_POST['answer_type'] && $_POST['type']=="add" )
 	{
 		$no_of_answer = FilterNumber($_POST['no_of_answer']);
 		$answer_type = FilterString($_POST['answer_type']);
@@ -1828,7 +1769,7 @@ wysiwyg_ajax_answer($MAIN_URL,40,'exam-answer');
 
 	}
 
-	if(isset($_POST['no_of_answer']) && ($_POST['answer_type']) && ($_POST['type']) == "edit_question" && ($_POST['question_id']))
+	if ( isset($_POST['no_of_answer']) && $_POST['answer_type'] && $_POST['type']=="edit_question" && ($_POST['question_id']) )
 	{
 
 		$no_of_answer = FilterNumber($_POST['no_of_answer']);
@@ -1868,7 +1809,7 @@ wysiwyg_ajax_answer($MAIN_URL,40,'exam-answer');
 
  //edit 
 
-	if (isset($_POST['id']) && ($_POST['question-answer']) && ($_POST['task']) == "question-answer-add" )
+	if ( isset($_POST['id']) && $_POST['question-answer'] && $_POST['task']=="question-answer-add" )
 	{
 		$id = FilterNumber($_POST['id']);
 		$_SESSION['question-answer'][$id] = $_POST['question-answer'];
