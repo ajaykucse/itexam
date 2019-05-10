@@ -134,6 +134,7 @@ if (isset($_POST['btnUpdateStudent']))
 
 			foreach ($FF as $KEY => $VALUE)
 			{
+				$SN=0;
 				foreach ($VALUE as $field_value)
 				{ 
 					++$SN;
@@ -158,10 +159,6 @@ if (isset($_POST['btnUpdateStudent']))
 				if ( (strlen($it_serial) > 0) && (strlen($reg_number) > 0)) // NOT IT SERIAL AND BLANK REG_NUMBER 
 				{
 
-					$strSELECT = "SELECT reg_no from exam_student WHERE reg_no = '$reg_number';";
-
-
-					$no_of_students = $db->num_rows($strSELECT);
 
 
 					$exam_code = $_SESSION["exam_code"];
@@ -174,35 +171,47 @@ if (isset($_POST['btnUpdateStudent']))
 					$no_of_student = $db->num_rows($exam_type);
 
 					$result=($exam_type['exam_type']);
+
+					
 					$getresult = substr($result, 0,2);
 				 	
 				 	$serial = substr($it_serial,0,2);
 
+				 	 
 
+				 	$query_reg_no = $db->query("SELECT COUNT(*) as total FROM exam_student WHERE reg_no='$reg_number';");
 
-					if ($$no_of_students > 0) {
+		 			///echo "SELECT COUNT(*) as total FROM exam_student WHERE reg_no='$reg_number';";
 
-						echo "already in use";
+				 	 
 
-					}else{
+				 	$query_reg_not = $query_reg_no->fetch_array(MYSQLI_ASSOC);
 
-					if ($getresult==$serial)
+				 	 
+
+				 	$rrrr = (int)$query_reg_not['total'];
+
+				  
+				 	 
+
+					if ($getresult == $serial && $rrrr == 0)
 					{
 						$student_id++;
 						$strINSERT = "INSERT INTO exam_student (student_id, it_serial, reg_no, name) VALUES ('$student_id', '$it_serial', '$reg_number', '$student_name');";
 						$db->begin();
 						$query_student = $db->query($strINSERT) ;
+
+						 
 					}
-					// else if ($no_of_std > 0 && $getresult==$serial )
-					// {
-					// 	$strINSERT = "UPDATE exam_student SET reg_no='$reg_number', name='$student_name' WHERE it_serial='$it_serial' AND reg_no='$reg_number';";
-					// 	$db->begin();
-					// 	$query_student = $db->query($strINSERT) ;
-					// }
+					else if ($rrrr  > 0 && $getresult==$serial )
+					{
+						$strINSERT = "UPDATE exam_student SET reg_no='$reg_number', name='$student_name' WHERE it_serial='$it_serial' AND reg_no='$reg_number';";
+						$db->begin();
+						$query_student = $db->query($strINSERT) ;
+					}
 					else 
 						$query_student  = true;
-				}
-				} // NOT BLANK REG_NUMBER
+					} // NOT BLANK REG_NUMBER
 				unset($it_serial, $student_name, $SN, $reg_number);
 			}
 
@@ -227,7 +236,8 @@ if (isset($_POST['btnUpdateStudent']))
 
 				$query_student_exam = $db->query($strStudentExam);
 				$no_of_student_exam = $db->num_rows($query_student_exam);
-        
+        		
+
         $isPass = isPassed($txt_student_id,$exam_id,$db);
         
         if ($isPass)
@@ -271,7 +281,7 @@ if (isset($_POST['btnUpdateStudent']))
       }
 
 
-			if (!$isExist && $exam_student && $exam_exam_student )
+			if (!$isExist && $exam_student && $exam_exam_student)
 			{
         
 				notify("Student Add","Successfully added student to this Exam." .$textExisting,NULL,TRUE,5000);
@@ -284,6 +294,8 @@ if (isset($_POST['btnUpdateStudent']))
 			}
 			else
 			{
+				notify("Student Add","Successfully added student to this Exam." .$textExisting,NULL,TRUE,5000);
+				$db->commit();
 				$db->rollback();
 				notify("Error","There is some error to add student. <br>Please try it later.",NULL,TRUE,6000);
 			}
@@ -428,6 +440,7 @@ if ($no_of_assigned_student > 0)
       <fieldset>
         <legend>Assigned Student</legend>
 					<table class="table table-bordered" id="exam_student_list">
+						<thead>
           	<tr>
             	<th width="5%">SN</th>
             	<th width="10%">IT Serial Number</th>
@@ -439,6 +452,7 @@ if ($no_of_assigned_student > 0)
                  </div>
 </th>
             </tr>
+            </thead>
 <?php
 unset($no_of_std);
 
