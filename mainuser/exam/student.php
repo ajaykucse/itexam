@@ -179,7 +179,7 @@ if (isset($_POST['btnUpdateStudent']))
 
 				 	 
 
-				 	$query_reg_no = $db->query("SELECT COUNT(*) as total FROM exam_student WHERE reg_no='$reg_number';");
+				 	$query_reg_no = $db->query("SELECT COUNT(*) as total FROM exam_student WHERE reg_no='$reg_number' AND code='$getresult' GROUP BY code;");
 
 		 			///echo "SELECT COUNT(*) as total FROM exam_student WHERE reg_no='$reg_number';";
 
@@ -197,7 +197,7 @@ if (isset($_POST['btnUpdateStudent']))
 					if ($getresult == $serial && $rrrr == 0)
 					{
 						$student_id++;
-						$strINSERT = "INSERT INTO exam_student (student_id, it_serial, reg_no, name) VALUES ('$student_id', '$it_serial', '$reg_number', '$student_name');";
+						$strINSERT = "INSERT INTO exam_student (student_id, it_serial, reg_no, name,code) VALUES ('$student_id', '$it_serial', '$reg_number', '$student_name','$serial');";
 						$db->begin();
 						$query_student = $db->query($strINSERT) ;
 
