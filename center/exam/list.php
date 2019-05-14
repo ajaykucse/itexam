@@ -422,9 +422,9 @@ if (isset($_POST['isSearchFilter']))
 		if (isset($_POST['btnSearchFilter']))		//Search
 		{
 			$exam_status = FilterNumber($_POST['exam_type']);
-			$date_type = FilterNumber($_POST['date_type']);
-			$start_date = FilterDateTime($_POST['start_date']);
-			$end_date = FilterDateTime($_POST['end_date']);
+			$date_type = FilterNumber(isset($_POST['date_type']));
+			$start_date = FilterDateTime(isset($_POST['start_date']));
+			$end_date = FilterDateTime(isset($_POST['end_date']));
 
 			if (isset($_POST['exam_type']))
 			{
@@ -690,7 +690,7 @@ function show_hide_date()
           </tr>
         </thead>
         <tbody>
-<?php
+<?php $SN=0;
 while ($row = $db->fetch_object($query))
 {
 
@@ -746,7 +746,7 @@ echo "</strong>";
 						if ($row->full_close == "Y")
             {
 ?>
-          <div class="pull-right"><button class="btn btn-success btn-xs result-publish" id="btnPublishResult2" name="btnPublishResult2"  data-id="<?php echo $row->exam_id;?>" data-id2="<?php echo $row->center_id;?>" data-input-name2="center_id" data-button="btnPublishResult" data-class="btn btn-success" data-input-name="exam_id" data-target="#result-publish-modal" data-toggle="modal" data-url="" data-toggle-tooltip="tooltip" data-placement="top">Result Published</button></div>
+          <div class="pull-right"><button class="btn btn-success btn-xs result-publish" id="btnPublishResult2" name="btnPublishResult2"  data-id="<?php echo $row->exam_id;?>" data-id2="<?php echo (isset($row->center_id));?>" data-input-name2="center_id" data-button="btnPublishResult" data-class="btn btn-success" data-input-name="exam_id" data-target="#result-publish-modal" data-toggle="modal" data-url="" data-toggle-tooltip="tooltip" data-placement="top">Result Published</button></div>
 <?php
             }
 ?>

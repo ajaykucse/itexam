@@ -810,6 +810,8 @@ SELECT exam_exam.exam_code,
 	";
 
 		$query_student = $db->query($strSelectStudent);
+		$studentss_info = $query_student->fetch_assoc();
+		$rest=($studentss_info['it_serial']);
     $row_std = $db->fetch_object($query_student);
     $full_mark = $row_std->full_mark;
     $pass_mark = $row_std->pass_mark;
@@ -825,7 +827,7 @@ SELECT exam_exam.exam_code,
     <div align="center">
       <b>The Institute of Chartered Accountants of Nepal</b><br>
       Satdobato, Lalitpur<br>
-      60 Hours  IT Training Course<br>
+      <?php echo substr($rest, 0,2); ?> Hours  IT Training Course<br>
 <strong>Exam Score Sheet</strong> </div>
 <br>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -919,7 +921,7 @@ SELECT exam_center.center_name
           </tr>
   </thead>
         <tbody>
-		<?php
+		<?php $SN=0;
 			while ($row_student = $db->fetch_object($query_student))
 			{
 				$mcq = $row_student->mcq_mark;
@@ -1020,6 +1022,8 @@ SELECT exam_exam.exam_code,
 	";
 
 		$query_student = $db->query($strSelectStudent);
+		$students_info = $query_student->fetch_assoc();
+		$res=($students_info['it_serial']);
     $row_std = $db->fetch_object($query_student);
     $full_mark = $row_std->full_mark;
     $pass_mark = $row_std->pass_mark;
@@ -1035,7 +1039,7 @@ SELECT exam_exam.exam_code,
     <div align="center">
       <b>The Institute of Chartered Accountants of Nepal</b><br>
       Satdobato, Lalitpur<br>
-      60 Hours  IT Training Course<br>
+			<?php echo substr($res, 0,2); ?> Hours  IT Training Course<br>
     <strong>Exam Score Sheet</strong> </div>
 <br>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -1131,7 +1135,7 @@ SELECT exam_center.center_name
           </tr>
         </thead>
         <tbody>
-		<?php
+		<?php $SN=0;
 			while ($row_student = $db->fetch_object($query_student))
 			{
 				$mcq = $row_student->mcq_mark;
@@ -1198,7 +1202,7 @@ if ($no_of_abs < 1) $txtAbs = TRUE;
 	}
 
 	
-	if ( ($_POST['center_id']) &&  ($_POST['exam_id']) && ($_POST['task'] == "student_login_admin") )
+	if (isset($_POST['center_id']) &&  ($_POST['exam_id']) && ($_POST['task'] == "student_login_admin") )
 	{
 		$exam_id = FilterNumber($_POST['exam_id']);
 		$center_id = FilterNumber($_POST['center_id']);
@@ -1646,7 +1650,7 @@ GROUP BY exam_exam_question.exam_id, exam_exam_question.chapter_no;
 			$query_student = $db->query($sql_student);
 			$no_of_student = $db->num_rows($query_student);
 			if ($no_of_student > 0)
-			{
+			{   $SN=0;
 				while ($row_student = $db->fetch_object($query_student))
 				{
 			?>

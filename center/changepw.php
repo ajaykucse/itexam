@@ -3,7 +3,7 @@
 if (file_exists("security.php")) include_once "security.php";
 if (isset($_SESSION['ONLINE-EXAM-SIMULATOR-CENTER-USER']) || isset($_SESSION['FirstTime']))
 {
-		$randomValue = ($_POST['password_random']);
+		$randomValue = (isset($_POST['password_random']));
 
 	if (isset($_POST['btnchangepw']))
 	{
@@ -89,7 +89,7 @@ if (isset($_SESSION['ONLINE-EXAM-SIMULATOR-CENTER-USER']) || isset($_SESSION['Fi
 
 ?>
 <?php 
-if ($isPasswordError)
+if (isset($isPasswordError))
 {
 	$CountERROR = count($pw_error);
 	$text = "<ul>";

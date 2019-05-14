@@ -1,5 +1,5 @@
 <?php
-session_start();
+@session_start();
 if (file_exists("security.php")) include_once "security.php";
 if (file_exists("../security.php")) include_once "../security.php";
 if (file_exists("../../security.php")) include_once "../../security.php";
@@ -429,7 +429,7 @@ $no_of_assigned_student = $db->num_rows($query_assigned_student);
         </tr>
       </thead>
       <tbody>
-<?php
+<?php $SNO =0;
 while ($rowStudentResult = $db->fetch_object($query_assigned_student))
 {
 

@@ -190,7 +190,10 @@ if (isset($_POST['btnUpdateStudent']))
 				 	 
 
 				 	$rrrr = (int)$query_reg_not['total'];
+					
 
+
+					 
 				  
 				 	 
 
@@ -279,8 +282,10 @@ if (isset($_POST['btnUpdateStudent']))
         }
         $textExisting .= "</ul>";
       }
-
-
+			// if($rrrr >=1)
+			// {
+			// 	notify("Student Add","These Dublicate Students are Not Accepted." .$it_serial .$reg_number .$student_name    .$textExisting,NULL,TRUE,5000);
+			// }
 			if (!$isExist && $exam_student && $exam_exam_student)
 			{
         

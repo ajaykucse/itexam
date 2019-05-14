@@ -48,10 +48,10 @@ unset($config);
 include_once "../includes/functions.inc.php";
 
 $username = $_SESSION['user']['username'] ;
-$UserRight = $_SESSION['user']['right'] ;
-$OfficeID = $_SESSION['user']['office'];
-$txtUserID = $_SESSION['user']['ID'] ;
-$password = $_SESSION['user']['password'];
+$UserRight = (isset($_SESSION['user']['right']));
+$OfficeID = (isset($_SESSION['user']['office']));
+$txtUserID = (isset($_SESSION['user']['ID'])) ;
+$password = (isset($_SESSION['user']['password']));
 $get = FilterString(($get));
 
 
