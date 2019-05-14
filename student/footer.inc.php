@@ -1,7 +1,7 @@
 <?php
 $db->close();
 unset($db);
-if ($_SESSION['ONLINE-EXAM-SIMULATOR'])
+if (isset($_SESSION['ONLINE-EXAM-SIMULATOR']))
 {
 ?>
       </div>

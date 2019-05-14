@@ -1025,8 +1025,8 @@ SELECT exam_exam.exam_code,
 		$students_info = $query_student->fetch_assoc();
 		$res=($students_info['it_serial']);
     $row_std = $db->fetch_object($query_student);
-    $full_mark = $row_std->full_mark;
-    $pass_mark = $row_std->pass_mark;
+    $full_mark = (isset($row_std->full_mark));
+    $pass_mark = (isset($row_std->pass_mark));
     $db->free($query_student);
     unset($row_std);
     

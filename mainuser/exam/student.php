@@ -189,14 +189,14 @@ if (isset($_POST['btnUpdateStudent']))
 
 				 	 
 
-				 	$rrrr = (int)$query_reg_not['total'];
-					
+					 $rrrr = (int)$query_reg_not['total'];
+					 
+
+
+
 
 
 					 
-				  
-				 	 
-
 					if ($getresult == $serial && $rrrr == 0)
 					{
 						$student_id++;

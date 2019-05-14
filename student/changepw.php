@@ -1,5 +1,5 @@
 <?php
-session_start();
+@session_start();
 if (file_exists("security.php")) include_once "security.php";
 if (isset($_SESSION['ONLINE-EXAM-SIMULATOR']) || isset($_SESSION['FirstTime']))
 {

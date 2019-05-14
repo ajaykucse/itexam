@@ -1,5 +1,5 @@
 <?php
-session_start();
+@session_start();
 if (!isset($_SESSION['ONLINE-EXAM-SIMULATOR-STUDENT']))
 		echo "<script>window.location='" . $MAIN_URL ."start.html';</script>";
 ?>
@@ -7,6 +7,7 @@ if (!isset($_SESSION['ONLINE-EXAM-SIMULATOR-STUDENT']))
 <?php
 $rand = RandomValue(20);
 $_SESSION['rand']['view_exam_result']=$rand;
+
 
 /*
 	$strExamCheck = "
@@ -108,9 +109,9 @@ if ($no_of_exam > 0)
 	if ($row_exam->full_close == 'Y')
 		$isClosed = TRUE;
 
-	if ($isClosed == FALSE)
+	if (isset($isClosed) == FALSE)
 	{
-		if ($isStarted)
+		if (isset($isStarted))
 		{
 			if ($isEnd == FALSE) 
 				$StartedNotFinished = TRUE;
@@ -119,7 +120,7 @@ if ($no_of_exam > 0)
 		}
 	}
 
-	if ($row_exam->is_closed == 'Y')
+	if (isset($row_exam->is_closed) == 'Y')
 	{
 		notify("Exam List","Assigned Exam has been fully closed.<br><br>Please contact to Administration.",$MAIN_URL."start.html",TRUE,10000);
 		include_once "footer.inc.php";
@@ -140,7 +141,7 @@ else
 ?>
 <?php
 
-if ($Finished)
+if (isset($Finished))
 {
 
 ?>
@@ -153,7 +154,7 @@ if ($Finished)
 		exit();
 }
 ?>
-<?php if ($StartedNotFinished)
+<?php if (isset($StartedNotFinished))
 {
 	$_SESSION['user']['exam']['started'] = TRUE;
 	echo "<script>window.location='exam.html';</script>";

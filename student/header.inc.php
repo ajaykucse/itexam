@@ -1,5 +1,5 @@
 <?php
-session_start();
+@session_start();
 
 //error_reporting(0);
 header("Cache-Control: no-store, no-cache, must-revalidate");
@@ -39,10 +39,10 @@ unset($config);
 include_once "../includes/functions.inc.php";
 
 $username = $_SESSION['user']['username'] ;
-$UserRight = $_SESSION['user']['right'] ;
-$OfficeID = $_SESSION['user']['office'];
-$txtUserID = $_SESSION['user']['ID'] ;
-$password = $_SESSION['user']['password'];
+$UserRight = (isset($_SESSION['user']['right']));
+$OfficeID = (isset($_SESSION['user']['office']));
+$txtUserID = (isset($_SESSION['user']['ID']));
+$password = (isset($_SESSION['user']['password']));
 $get = FilterString(($get));
 
 if ($get == "login")
@@ -150,7 +150,7 @@ $row_student = $db->fetch_object($query_student);
                     <p><strong>Name: </strong><?php echo $row_student->name;?></p>
 
                     <br>
-<?php if ($_SESSION['user']['exam']['started']) 
+<?php if (isset($_SESSION['user']['exam']['started'])) 
 {
 	?>
                     <div><b>Total Time :&nbsp;<font size="+1"><span id="TotalTime"></span></font></b></div>
