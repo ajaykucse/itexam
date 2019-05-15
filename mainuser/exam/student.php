@@ -27,7 +27,9 @@ if (isset($_POST['btnAddStudent']))		//Add student from Exam
 			{
         unset($isExisting);
 				$KEY = FilterNumber($KEY);
-				$txt_rand_pass =  RandomString(8);
+				$data = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+  				$txt_rand_pass = substr(str_shuffle($data), 0, 4);
+				//$txt_rand_pass =  RandomString(8);
 				$randPass = base64_encode($txt_rand_pass);
 				$txtPass = pacrypt($txt_rand_pass,"");
 				$strStudentCheck = "SELECT * from exam_exam_student WHERE exam_id = '$exam_id' AND student_id = '$KEY' AND center_id = '$center_id';";
@@ -299,10 +301,16 @@ if (isset($_POST['btnUpdateStudent']))
 			}
 			else
 			{
-				notify("Student Add","Successfully added student to this Exam." .$textExisting,NULL,TRUE,5000);
+				
 				$db->commit();
-				$db->rollback();
+
+				if($db->commit()==true)
+				{
+					notify("Student Add","Successfully added student to this Exam." .$textExisting,NULL,TRUE,5000);
+				}else{
+					$db->rollback();
 				notify("Error","There is some error to add student. <br>Please try it later.",NULL,TRUE,6000);
+				}
 			}
       
 	}

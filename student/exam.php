@@ -1,5 +1,5 @@
 <?php
-session_start();
+@session_start();
 
 if (!isset($_SESSION['ONLINE-EXAM-SIMULATOR-STUDENT']))
 		echo "<script>window.location='" . $MAIN_URL ."start.html';</script>";
@@ -48,8 +48,8 @@ if ($no_of_exam > 0)
 }
 
 
-$previous = $_POST['previous'];
-$next = $_POST['next'];
+$previous = (isset($_POST['previous']));
+$next = (isset($_POST['next']));
 
 if (!isset($next)) $next = 2;
 if (!isset($previous)) $previous = 0;
@@ -377,7 +377,7 @@ if (isset($_POST['btnFinishExam']))
 
 
 
-if ($MaximumReached)
+if (isset($MaximumReached))
 {
 	FinishExam($exam_id, $student_id, $db, $rand, $no_of_question);
 }
@@ -875,8 +875,8 @@ function QuestionID ($exam_id,$student_id,$db)
 	$query_question_id = $db->query($strExam);
 	
 	$row_question_id = $db->fetch_object($query_question_id);
-	$question_id = $row_question_id->question_id;
-	$chapter_no = $row_question_id->chapter_no;
+	$question_id = (isset($row_question_id->question_id));
+	$chapter_no = (isset($row_question_id->chapter_no));
 	$isExist = CheckDuplication ($question_id,$exam_id,$chapter_no, $db);
 	if ($isExist) 
 	{
@@ -902,7 +902,7 @@ function CheckDuplication ($question_id, $exam_id, $chapter_no, $db)
 	$strMaxChapQuestion = "SELECT * FROM exam_type_chapter_question WHERE chapter_no = '$chapter_no' AND exam_type_id = '$exam_type_id';";
 	$query_max = $db->query($strMaxChapQuestion);
 	$row_max = $db->fetch_object($query_max);
-	$no_of_question = $row_max->no_of_question;
+	$no_of_question = (isset($row_max->no_of_question));
 	$db->free($query_max);
 	unset($strMaxChapQuestion, $query_max, $row_max);
 

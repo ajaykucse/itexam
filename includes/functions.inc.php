@@ -932,7 +932,7 @@ FROM (exam_exam exam_exam
 						}
 				}
 		}
-		return $queryUpdate;
+		return (isset($queryUpdate));
 	}
 }
 
